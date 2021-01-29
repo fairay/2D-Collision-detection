@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     ball/ball.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    scene/scene.cpp
 
 HEADERS += \
     ball/ball.h \
-    mainwindow.h
+    mainwindow.h \
+    scene/scene.h
 
 FORMS += \
     mainwindow.ui
