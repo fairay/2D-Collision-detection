@@ -2,11 +2,17 @@
 #define BALL_H
 
 #include <QColor>
+#include <math.h>
 
 using Point2d = struct
 {
     double x, y;
 };
+
+double length(Point2d p)
+{
+    return sqrt(p.x*p.x + p.y*p.y);
+}
 
 class Ball
 {

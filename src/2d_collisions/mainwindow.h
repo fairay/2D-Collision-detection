@@ -20,6 +20,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_startButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<QGraphicsScene> _qscene;

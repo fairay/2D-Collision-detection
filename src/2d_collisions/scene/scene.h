@@ -9,12 +9,20 @@
 #include <random>
 #include <vector>
 
+#define MAX_SPEED 10.0
+
+using upd_t = enum {
+    NO_CHECK,
+    BRUTE_FORCE
+};
+
 class Scene
 {
 public:
     Scene(size_t n, double r);
 
     void show(std::shared_ptr<QGraphicsScene> &_qscene);
+    void update(double dt, upd_t update_type = NO_CHECK);
 
     ~Scene();
 private:
@@ -25,6 +33,10 @@ private:
     std::vector<Ball> _ball_arr;
 
     void _init_state();
+    void _collide_border(Ball& ball, double x, double y);
+    void _collide_balls(Ball& ball1, Ball& ball2);
+
+    void _brute_force();
 };
 
 #endif // SCENE_H
