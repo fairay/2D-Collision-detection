@@ -9,12 +9,12 @@
 #include <random>
 #include <vector>
 
-#define MAX_SPEED 10.0
+#define MAX_SPEED 100.0
 
-using upd_t = enum {
+typedef enum {
     NO_CHECK,
     BRUTE_FORCE
-};
+} upd_t;
 
 class Scene
 {

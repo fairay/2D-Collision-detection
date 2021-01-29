@@ -26,7 +26,23 @@ MainWindow::~MainWindow()
 }
 
 
+/// Главный цикл обновления
+void MainWindow::_main_cycle()
+{
+    time_t time = clock();
+    time_t pre_time = time - 1;
+    while(clock() - time < 1000*30)
+    {
+        time_t new_time = clock();
+        _scene.update((double)(new_time - pre_time)/1000, BRUTE_FORCE);
+        _scene.show(_qscene);
+        // ui->fps_count->setNum(static_cast<int>(1000.0 / (new_time - pre_time)));
+        pre_time = new_time;
+        QCoreApplication::processEvents();
+    }
+}
+
 void MainWindow::on_startButton_clicked()
 {
-
+    _main_cycle();
 }

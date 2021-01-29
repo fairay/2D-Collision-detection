@@ -28,5 +28,7 @@ private:
     std::shared_ptr<QGraphicsScene> _qscene;
 
     Scene _scene;
+
+    void _main_cycle();
 };
 #endif // MAINWINDOW_H
