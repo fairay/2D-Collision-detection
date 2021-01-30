@@ -4,15 +4,13 @@
 #include <QColor>
 #include <math.h>
 
-using Point2d = struct
+using Point2d = struct Point2d
 {
     double x, y;
+    Point2d() {}
+    Point2d(double x_, double y_): x(x_), y(y_) {}
 };
-
-double length(Point2d p)
-{
-    return sqrt(p.x*p.x + p.y*p.y);
-}
+double length(Point2d p);
 
 class Ball
 {

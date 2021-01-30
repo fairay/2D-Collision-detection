@@ -13,8 +13,11 @@
 
 typedef enum {
     NO_CHECK,
-    BRUTE_FORCE
+    BRUTE_FORCE,
+    QUAD_TREE
 } upd_t;
+
+using collide_func = void (*)(Ball& ball1, Ball& ball2);
 
 class Scene
 {
@@ -34,9 +37,10 @@ private:
 
     void _init_state();
     void _collide_border(Ball& ball, double x, double y);
-    void _collide_balls(Ball& ball1, Ball& ball2);
+    static void _collide_balls(Ball& ball1, Ball& ball2);
 
     void _brute_force();
+    void _quad_tree();
 };
 
 #endif // SCENE_H

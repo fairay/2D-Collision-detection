@@ -1,5 +1,11 @@
 #include "ball.h"
 
+double length(Point2d p)
+{
+    return sqrt(p.x*p.x + p.y*p.y);
+}
+
+
 Ball::Ball() {}
 Ball::Ball(double x, double y, double _r)
 {

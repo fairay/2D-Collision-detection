@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -26,6 +27,7 @@ public:
     QWidget *centralwidget;
     QGraphicsView *graphicsView;
     QPushButton *startButton;
+    QLabel *fps_count;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -42,6 +44,9 @@ public:
         startButton = new QPushButton(centralwidget);
         startButton->setObjectName(QString::fromUtf8("startButton"));
         startButton->setGeometry(QRect(620, 10, 161, 61));
+        fps_count = new QLabel(centralwidget);
+        fps_count->setObjectName(QString::fromUtf8("fps_count"));
+        fps_count->setGeometry(QRect(640, 90, 47, 14));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -60,6 +65,7 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         startButton->setText(QCoreApplication::translate("MainWindow", "\320\241\321\202\320\260\321\200\321\202", nullptr));
+        fps_count->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
     } // retranslateUi
 
 };

@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _qscene(new QGraphicsScene(-10, -10, 10, 10)),
-    _scene(100, 7.0)
+    _scene(1000, 3.0)
 {
     ui->setupUi(this);
 
@@ -31,12 +31,26 @@ void MainWindow::_main_cycle()
 {
     time_t time = clock();
     time_t pre_time = time - 1;
-    while(clock() - time < 1000*30)
+    time_t fps_time = clock();
+    size_t fps_count = 0;
+    double fps_update = 400.0;
+
+    while(clock() - time < 1000*60)
     {
         time_t new_time = clock();
-        _scene.update((double)(new_time - pre_time)/1000, BRUTE_FORCE);
-        _scene.show(_qscene);
-        // ui->fps_count->setNum(static_cast<int>(1000.0 / (new_time - pre_time)));
+        _scene.update((double)(new_time - pre_time)/1000, QUAD_TREE);
+        // _scene.show(_qscene);
+        fps_count++;
+
+        if (new_time - fps_time > fps_update)
+        {
+            ui->fps_count->setNum(static_cast<int>(fps_count / ((new_time - fps_time) / 1000.0)));
+
+            fps_time = new_time;
+            fps_count = 0;
+        }
+
+
         pre_time = new_time;
         QCoreApplication::processEvents();
     }

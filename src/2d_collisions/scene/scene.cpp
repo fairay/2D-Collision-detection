@@ -52,6 +52,9 @@ void Scene::update(double dt, upd_t update_type)
     case BRUTE_FORCE:
         _brute_force();
         break;
+    case QUAD_TREE:
+        _quad_tree();
+        break;
     default:
         printf("No such collidion algorithm\n");
         break;

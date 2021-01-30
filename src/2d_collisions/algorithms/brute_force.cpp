@@ -7,7 +7,7 @@ void Scene::_brute_force()
         {
             double dist = sqrt(pow(_ball_arr[i].pos.x - _ball_arr[j].pos.x, 2) +
                                pow(_ball_arr[i].pos.y - _ball_arr[j].pos.y, 2));
-            if (dist <= _ball_r*2)
+            if (dist <= _ball_arr[i].r + _ball_arr[j].r)
                 _collide_balls(_ball_arr[i], _ball_arr[j]);
         }
 }
