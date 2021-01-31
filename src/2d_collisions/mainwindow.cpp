@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _qscene(new QGraphicsScene(-10, -10, 10, 10)),
-    _scene(1000, 3.0)
+    _scene(200, 3.0)
 {
     ui->setupUi(this);
 
@@ -39,7 +39,7 @@ void MainWindow::_main_cycle()
     {
         time_t new_time = clock();
         _scene.update((double)(new_time - pre_time)/1000, QUAD_TREE);
-        // _scene.show(_qscene);
+        _scene.show(_qscene);//
         fps_count++;
 
         if (new_time - fps_time > fps_update)

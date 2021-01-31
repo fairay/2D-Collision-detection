@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     algorithms/brute_force.cpp \
+    algorithms/dynamic_quad_tree.cpp \
     algorithms/quad_tree.cpp \
     ball/ball.cpp \
     main.cpp \
