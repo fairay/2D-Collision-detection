@@ -21,13 +21,13 @@ public:
     void add_ball(Ball* ball);
     void collide(collide_func f);
 private:
-    size_t _split_n = 20;
+    size_t _split_n = 10;
     Point2d _min_p, _max_p;
     Point2d _center;
 
     bool _is_leaf = true;
     vector<Ball*> _ball_arr;
-    array<shared_ptr<QuadTree>, 4> _leaf_arr;
+    QuadTree* _leaf_arr[4];
 
     void _add_ball_leafs(Ball* ball);
     void _init_leafs();
@@ -39,7 +39,12 @@ QuadTree::QuadTree(Point2d min_p, Point2d max_p): _min_p(min_p), _max_p(max_p)
     _center.x = (min_p.x + max_p.x) / 2;
     _center.y = (min_p.y + max_p.y) / 2;
 }
-QuadTree::~QuadTree() {}
+QuadTree::~QuadTree()
+{
+    if (!_is_leaf)
+        for (size_t i=0; i<4; i++)
+            delete _leaf_arr[i];
+}
 
 void QuadTree::add_ball(Ball* ball)
 {
@@ -79,33 +84,33 @@ void QuadTree::collide(collide_func f)
     }
     else
     {
-        for (auto leaf: _leaf_arr)
-            leaf->collide(f);
+        for (size_t i=0; i<4; i++)
+            _leaf_arr[i]->collide(f);
     }
 }
 
 void QuadTree::_add_ball_leafs(Ball* ball)
 {
-    for (auto leaf : _leaf_arr)
-        leaf->add_ball(ball);
+    for (size_t i=0; i<4; i++)
+        _leaf_arr[i]->add_ball(ball);
 }
 
 void QuadTree::_init_leafs()
 {
     this->_is_leaf = false;
 
-    _leaf_arr[0] = shared_ptr<QuadTree>(new QuadTree(_min_p, _center));
+    _leaf_arr[0] = new QuadTree(_min_p, _center);
 
     Point2d p1, p2;
     p1 = _center, p2 = _center;
     p1.y = _min_p.y, p2.x = _max_p.x;
-    _leaf_arr[1] = shared_ptr<QuadTree>(new QuadTree(p1, p2));
+    _leaf_arr[1] = new QuadTree(p1, p2);
 
     p1 = _center, p2 = _center;
     p1.x = _min_p.x, p2.y = _max_p.y;
-    _leaf_arr[2] = shared_ptr<QuadTree>(new QuadTree(p1, p2));
+    _leaf_arr[2] = new QuadTree(p1, p2);
 
-    _leaf_arr[3] = shared_ptr<QuadTree>(new QuadTree(_center, _max_p));
+    _leaf_arr[3] = new QuadTree(_center, _max_p);
 }
 
 

@@ -14,7 +14,10 @@
 typedef enum {
     NO_CHECK,
     BRUTE_FORCE,
-    QUAD_TREE
+    QUAD_TREE,
+    DYNAMINC_QUAD_TREE,
+    HEXA_TREE,
+    BIN_TREE
 } upd_t;
 
 using collide_func = void (*)(Ball& ball1, Ball& ball2);
@@ -41,6 +44,10 @@ private:
 
     void _brute_force();
     void _quad_tree();
+    // Katya
+
+    // Seva
+
 };
 
 #endif // SCENE_H
