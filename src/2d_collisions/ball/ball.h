@@ -11,6 +11,20 @@ using Point2d = struct Point2d
     Point2d(double x_, double y_): x(x_), y(y_) {}
 };
 double length(Point2d p);
+double dist(Point2d p1, Point2d p2);
+Point2d mid_point(const Point2d& p1, const Point2d& p2);
+
+using Vector2d = struct Vector2d
+{
+    double x, y;
+    Vector2d() {}
+    Vector2d(double x_, double y_): x(x_), y(y_) {}
+    Vector2d(const Point2d& p1, const Point2d& p2): x(p2.x - p1.x), y(p2.y - p1.y) {}
+};
+double length(const Vector2d& p);
+void normalize(Vector2d& v);
+double vector_mult(const Vector2d& v1, const Vector2d& v2);
+
 
 class Ball
 {

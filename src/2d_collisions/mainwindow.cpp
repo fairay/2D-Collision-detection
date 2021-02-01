@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent):
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setScene(&(*_qscene));
 
-    _qscene->addLine(0, 0, 100, 200);
     _scene.show(_qscene);
 }
 
@@ -38,8 +37,8 @@ void MainWindow::_main_cycle()
     while(clock() - time < 1000*60)
     {
         time_t new_time = clock();
-        _scene.update((double)(new_time - pre_time)/1000, HEXA_TREE);
-        //_scene.show(_qscene);//
+        _scene.update((double)(new_time - pre_time)/1000, BIN_TREE);
+        // _scene.show(_qscene);//
         fps_count++;
 
         if (new_time - fps_time > fps_update)

@@ -49,6 +49,7 @@ private:
     void _hexa_tree();
 
     // Seva
+    void _bin_tree();
 
 };
 
