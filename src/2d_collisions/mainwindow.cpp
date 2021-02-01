@@ -38,7 +38,7 @@ void MainWindow::_main_cycle()
     while(clock() - time < 1000*60)
     {
         time_t new_time = clock();
-        _scene.update((double)(new_time - pre_time)/1000, HEXA_TREE);
+        _scene.update((double)(new_time - pre_time)/1000, BRUTE_FORCE);
         //_scene.show(_qscene);//
         fps_count++;
 

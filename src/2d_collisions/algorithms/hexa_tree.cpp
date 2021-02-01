@@ -13,7 +13,7 @@ public:
     void add_ball(Ball* ball);
     void collide(collide_func f);
 private:
-    size_t _split_n = 20;
+    size_t _split_n = 100;
     Point2d _min_p, _max_p;
     Point2d _cnt0, _cnt1, _cnt2, _cnt3;
 
