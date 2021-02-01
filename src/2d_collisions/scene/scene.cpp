@@ -58,6 +58,9 @@ void Scene::update(double dt, upd_t update_type)
     case DYNAMIC_QUAD_TREE:
         _dynamic_quad_tree();
         break;
+    case HEXA_TREE:
+        _hexa_tree();
+        break;
     default:
         printf("No such collidion algorithm\n");
         break;

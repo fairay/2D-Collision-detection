@@ -46,6 +46,7 @@ private:
     void _quad_tree();
     // Katya
     void _dynamic_quad_tree();
+    void _hexa_tree();
 
     // Seva
 
