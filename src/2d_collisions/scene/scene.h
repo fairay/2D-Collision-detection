@@ -15,7 +15,7 @@ typedef enum {
     NO_CHECK,
     BRUTE_FORCE,
     QUAD_TREE,
-    DYNAMINC_QUAD_TREE,
+    DYNAMIC_QUAD_TREE,
     HEXA_TREE,
     BIN_TREE
 } upd_t;
@@ -45,6 +45,8 @@ private:
     void _brute_force();
     void _quad_tree();
     // Katya
+    void _dynamic_quad_tree();
+    void _hexa_tree();
 
     // Seva
 
