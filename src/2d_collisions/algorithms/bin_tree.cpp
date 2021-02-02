@@ -89,7 +89,7 @@ void BinTree::collide(collide_func f)
 void thread_act(BaseTree* tree, collide_func f, size_t deep)
 {
     if (tree->is_void()) return;
-    if (deep < 6)
+    if (deep < 8)
         tree->collide_mult(f, deep);
     else
         tree->collide(f);
@@ -193,6 +193,6 @@ void Scene::_bin_tree()
     for (size_t i=0; i<_ball_n; i++)
         tree.add_ball(&_ball_arr[i]);
 
-    tree.collide(_collide_balls);
-    // tree.collide_mult(_collide_balls, 0);
+    //tree.collide(_collide_balls);
+    tree.collide_mult(_collide_balls, 0);
 }
