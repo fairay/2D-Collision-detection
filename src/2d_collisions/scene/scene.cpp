@@ -61,6 +61,9 @@ void Scene::update(double dt, upd_t update_type)
     case HEXA_TREE:
         _hexa_tree();
         break;
+    case BIN_TREE:
+        _bin_tree();
+        break;
     default:
         printf("No such collidion algorithm\n");
         break;
