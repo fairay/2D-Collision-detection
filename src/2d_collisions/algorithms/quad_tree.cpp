@@ -1,4 +1,4 @@
-#include "scene/scene.h"
+#include "base_tree.h"
 
 using namespace std;
 /*
@@ -12,7 +12,7 @@ min_p
           max_p
 */
 
-class QuadTree
+class QuadTree: public BaseTree
 {
 public:
     QuadTree(Point2d min_p, Point2d max_p);

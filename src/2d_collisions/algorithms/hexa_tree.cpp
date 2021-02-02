@@ -1,10 +1,10 @@
-#include "scene/scene.h"
+#include "base_tree.h"
 #include <iostream>
 
 using namespace std;
 
 
-class HexaTree
+class HexaTree: public BaseTree
 {
 public:
     HexaTree(Point2d min_p, Point2d max_p);

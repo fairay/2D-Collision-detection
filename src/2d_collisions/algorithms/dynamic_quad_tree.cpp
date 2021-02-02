@@ -1,9 +1,9 @@
-#include "scene/scene.h"
+#include "base_tree.h"
 
 using namespace std;
 
 
-class DynamicQuadTree
+class DynamicQuadTree: public BaseTree
 {
 public:
     DynamicQuadTree(Point2d min_p, Point2d max_p);

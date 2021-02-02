@@ -1,3 +1,4 @@
+release/base_tree.o
 release/bin_tree.o
 release/brute_force.o
 release/dynamic_quad_tree.o
