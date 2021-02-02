@@ -1,4 +1,5 @@
-#include "scene/scene.h"
+#include "base_tree.h"
+#define SPLIT_N 100
 
 using namespace std;
 /*
@@ -12,7 +13,7 @@ min_p
           max_p
 */
 
-class QuadTree
+class QuadTree: public BaseTree
 {
 public:
     QuadTree(Point2d min_p, Point2d max_p);
@@ -21,12 +22,9 @@ public:
     void add_ball(Ball* ball);
     void collide(collide_func f);
 private:
-    size_t _split_n = 100;
     Point2d _min_p, _max_p;
     Point2d _center;
 
-    bool _is_leaf = true;
-    vector<Ball*> _ball_arr;
     QuadTree* _leaf_arr[4];
 
     void _add_ball_leafs(Ball* ball);
@@ -36,6 +34,7 @@ private:
 
 QuadTree::QuadTree(Point2d min_p, Point2d max_p): _min_p(min_p), _max_p(max_p)
 {
+    _split_n = SPLIT_N;
     _center.x = (min_p.x + max_p.x) / 2;
     _center.y = (min_p.y + max_p.y) / 2;
 }

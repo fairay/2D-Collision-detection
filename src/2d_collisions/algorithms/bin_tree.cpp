@@ -1,25 +1,28 @@
-#include "scene/scene.h"
+#include "base_tree.h"
 #include <iostream>
+#include <thread>
+
+#define SPLIT_N 70
 
 using namespace std;
-class BinTree
+class BinTree: public BaseTree
 {
 public:
-    BinTree() {}
+    BinTree() {_split_n = SPLIT_N;}
     BinTree(Point2d a, Point2d b, Point2d c);
     ~BinTree();
 
     void add_ball(Ball* ball);
     void collide(collide_func f);
+    void collide_mult(collide_func f, size_t deep);
+
+    int deep();
 protected:
-    size_t _split_n = 70;
     Point2d _p_arr[3];
 
     Vector2d _dir;
     Vector2d _right_off, _left_off;
 
-    bool _is_leaf = true;
-    vector<Ball*> _ball_arr;
     BinTree* _left_leaf;
     BinTree* _right_leaf;
 
@@ -29,6 +32,7 @@ protected:
 
 BinTree::BinTree(Point2d a, Point2d b, Point2d c)
 {
+    _split_n = SPLIT_N;
     double ad = dist(b, c);
     double bd = dist(a, c);
     double cd = dist(a, b);
@@ -73,15 +77,7 @@ void BinTree::collide(collide_func f)
     if (_is_leaf)
     {
         if (_ball_arr.size() < 2) return;
-
-        for (size_t i=0; i<_ball_arr.size(); i++)
-            for (size_t j=i+1; j<_ball_arr.size(); j++)
-            {
-                double dist = sqrt(pow(_ball_arr[i]->pos.x - _ball_arr[j]->pos.x, 2) +
-                                   pow(_ball_arr[i]->pos.y - _ball_arr[j]->pos.y, 2));
-                if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
-                    f(*_ball_arr[i], *_ball_arr[j]);
-            }
+        _collide_leaf(f);
     }
     else
     {
@@ -90,7 +86,37 @@ void BinTree::collide(collide_func f)
     }
 }
 
+void thread_act(BaseTree* tree, collide_func f, size_t deep)
+{
+    if (tree->is_void()) return;
+    if (deep < 6)
+        tree->collide_mult(f, deep);
+    else
+        tree->collide(f);
+}
 
+void BinTree::collide_mult(collide_func f, size_t deep)
+{
+    if (_is_leaf)
+    {
+        _collide_leaf(f);
+    }
+    else
+    {
+        thread t1(thread_act, _left_leaf,  f, deep+1);
+        thread_act(_right_leaf, f, deep+1);
+        t1.join();
+    }
+}
+
+
+int BinTree::deep()
+{
+    if (_is_leaf)
+        return 1;
+    else
+        return max(_left_leaf->deep(), _right_leaf->deep()) + 1;
+}
 
 void BinTree::_init_leavs()
 {
@@ -168,4 +194,5 @@ void Scene::_bin_tree()
         tree.add_ball(&_ball_arr[i]);
 
     tree.collide(_collide_balls);
+    // tree.collide_mult(_collide_balls, 0);
 }

@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    algorithms/base_tree.cpp \
     algorithms/bin_tree.cpp \
     algorithms/brute_force.cpp \
     algorithms/dynamic_quad_tree.cpp \
@@ -20,6 +21,8 @@ SOURCES += \
     scene/scene.cpp
 
 HEADERS += \
+    algorithms/base_tree.h \
+    algorithms/thread_manager.h \
     ball/ball.h \
     mainwindow.h \
     scene/scene.h

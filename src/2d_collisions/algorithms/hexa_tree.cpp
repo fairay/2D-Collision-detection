@@ -1,10 +1,11 @@
-#include "scene/scene.h"
+#include "base_tree.h"
 #include <iostream>
+#define SPLIT_N 100
 
 using namespace std;
 
 
-class HexaTree
+class HexaTree: public BaseTree
 {
 public:
     HexaTree(Point2d min_p, Point2d max_p);
@@ -13,12 +14,9 @@ public:
     void add_ball(Ball* ball);
     void collide(collide_func f);
 private:
-    size_t _split_n = 100;
     Point2d _min_p, _max_p;
     Point2d _cnt0, _cnt1, _cnt2, _cnt3;
 
-    bool _is_leaf = true;
-    vector<Ball*> _ball_arr;
     HexaTree* _leaf_arr[9];
 
     void _add_ball_leaves(Ball* ball);
@@ -28,6 +26,8 @@ private:
 
 HexaTree::HexaTree(Point2d min_p, Point2d max_p): _min_p(min_p), _max_p(max_p)
 {
+    _split_n = SPLIT_N;
+
     _cnt0.x = max_p.x / 3 + 2.0/3 * min_p.x;
     _cnt0.y = max_p.y / 3 + 2.0/3 * min_p.y;
 

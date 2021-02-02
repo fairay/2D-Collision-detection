@@ -1,9 +1,10 @@
-#include "scene/scene.h"
+#include "base_tree.h"
+#define SPLIT_N 100
 
 using namespace std;
 
 
-class DynamicQuadTree
+class DynamicQuadTree: public BaseTree
 {
 public:
     DynamicQuadTree(Point2d min_p, Point2d max_p);
@@ -14,19 +15,20 @@ public:
     void split_space();
     void collide(collide_func f);
 private:
-    size_t _split_n = 100;
     Point2d _min_p, _max_p;
     Point2d _center;
 
-    bool _is_leaf = true;
-    vector<Ball*> _ball_arr;
     DynamicQuadTree* _leaf_arr[4];
 
     void _init_leaves();
     void _add_ball_leaves(Ball* ball);
 };
 
-DynamicQuadTree::DynamicQuadTree(Point2d min_p, Point2d max_p): _min_p(min_p), _max_p(max_p){}
+DynamicQuadTree::DynamicQuadTree(Point2d min_p, Point2d max_p):
+    _min_p(min_p), _max_p(max_p)
+{
+    _split_n = SPLIT_N;
+}
 
 DynamicQuadTree::~DynamicQuadTree()
 {
