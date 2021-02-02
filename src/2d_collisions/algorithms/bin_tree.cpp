@@ -12,7 +12,7 @@ public:
     void add_ball(Ball* ball);
     void collide(collide_func f);
 protected:
-    size_t _split_n = 10;
+    size_t _split_n = 70;
     Point2d _p_arr[3];
 
     Vector2d _dir;
