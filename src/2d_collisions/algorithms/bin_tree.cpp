@@ -2,11 +2,13 @@
 #include <iostream>
 #include <thread>
 
+#define BIN_SPLIT 70
+
 using namespace std;
 class BinTree: public BaseTree
 {
 public:
-    BinTree() {}
+    BinTree() {_split_n = BIN_SPLIT;}
     BinTree(Point2d a, Point2d b, Point2d c);
     ~BinTree();
 
@@ -30,6 +32,7 @@ protected:
 
 BinTree::BinTree(Point2d a, Point2d b, Point2d c)
 {
+    _split_n = BIN_SPLIT;
     double ad = dist(b, c);
     double bd = dist(a, c);
     double cd = dist(a, b);
