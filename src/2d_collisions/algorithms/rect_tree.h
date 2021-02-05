@@ -17,7 +17,8 @@ public:
     void collide_mult(collide_func f, int deep);
 
     int deep();
-    virtual bool is_ball_in(Ball *ball) = 0;
+    virtual void split_space();
+    virtual bool is_ball_in(Ball *ball);
 protected:
     Point2d _min_p, _max_p;
     RectTree* _leaf_arr[MAX_LEAF_N];

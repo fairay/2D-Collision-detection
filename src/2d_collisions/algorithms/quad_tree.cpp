@@ -20,8 +20,6 @@ class QuadTree: public RectTree
 public:
     QuadTree(Point2d min_p, Point2d max_p);
     ~QuadTree();
-
-    bool is_ball_in(Ball *ball);
 private:
     Point2d _center;
     virtual void _init_leaves();
@@ -148,12 +146,6 @@ void QuadTree::_init_leaves()
     _leaf_arr[2] = new QuadTree(p1, p2);
 
     _leaf_arr[3] = new QuadTree(_center, _max_p);
-}
-
-bool QuadTree::is_ball_in(Ball *ball)
-{
-    return _min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
-            _min_p.y - ball->r < ball->pos.y && ball->pos.y < _max_p.y + ball->r;
 }
 
 void Scene::_quad_tree(bool is_threading)

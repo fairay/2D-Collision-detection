@@ -106,3 +106,11 @@ int RectTree::deep()
         return deep + 1;
     }
 }
+
+void RectTree::split_space() {}
+
+bool RectTree::is_ball_in(Ball *ball)
+{
+    return _min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
+            _min_p.y - ball->r < ball->pos.y && ball->pos.y < _max_p.y + ball->r;
+}

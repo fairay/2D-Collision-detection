@@ -10,8 +10,6 @@ class HexaTree: public RectTree
 public:
     HexaTree(Point2d min_p, Point2d max_p);
     ~HexaTree();
-
-    bool is_ball_in(Ball *ball);
 private:
     Point2d _cnt0, _cnt1, _cnt2, _cnt3;
 
@@ -93,12 +91,6 @@ void HexaTree::_add_ball_leaves(Ball* ball)
         _leaf_arr[i]->add_ball(ball);
 }
 */
-
-bool HexaTree::is_ball_in(Ball *ball)
-{
-    return _min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
-            _min_p.y - ball->r < ball->pos.y && ball->pos.y < _max_p.y + ball->r;
-}
 
 void HexaTree::_init_leaves()
 {
