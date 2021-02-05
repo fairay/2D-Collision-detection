@@ -1,4 +1,5 @@
 #include "scene.h"
+#include <thread>
 
 using namespace std;
 
@@ -27,48 +28,79 @@ void Scene::show(shared_ptr<QGraphicsScene> &_qscene)
     }
 }
 
-void Scene::update(double dt, upd_t update_type)
+void Scene::upd_ball(Ball& ball, double dt)
 {
-    for (size_t i=0; i<_ball_n; i++)
-    {
-        Ball& ball = _ball_arr[i];
-        ball.pos.x += ball.vel.x * dt;
-        ball.pos.y += ball.vel.y * dt;
+    ball.pos.x += ball.vel.x * dt;
+    ball.pos.y += ball.vel.y * dt;
 
-        if (ball.pos.x - _ball_r < 0)
-            _collide_border(ball, 0, ball.pos.y);
-        if (ball.pos.x + _ball_r > _w)
-            _collide_border(ball, _w, ball.pos.y);
-        if (ball.pos.y - _ball_r < 0)
-            _collide_border(ball, ball.pos.x, 0);
-        if (ball.pos.y + _ball_r > _h)
-            _collide_border(ball, ball.pos.x, _h);
-    }
+    if (ball.pos.x - _ball_r < 0)
+        _collide_border(ball, 0, ball.pos.y);
+    if (ball.pos.x + _ball_r > _w)
+        _collide_border(ball, _w, ball.pos.y);
+    if (ball.pos.y - _ball_r < 0)
+        _collide_border(ball, ball.pos.x, 0);
+    if (ball.pos.y + _ball_r > _h)
+        _collide_border(ball, ball.pos.x, _h);
+}
+
+void Scene::update(double dt, upd_t update_type, bool is_threading)
+{
+    if (is_threading)
+        _upd_pos_mul(dt);
+    else
+        _upd_pos(dt);
 
     switch (update_type)
     {
     case NO_CHECK:
         break;
     case BRUTE_FORCE:
-        _brute_force();
+        _brute_force(is_threading);
         break;
     case QUAD_TREE:
-        _quad_tree();
+        _quad_tree(is_threading);
         break;
     case DYNAMIC_QUAD_TREE:
-        _dynamic_quad_tree();
+        _dynamic_quad_tree(is_threading);
         break;
     case HEXA_TREE:
-        _hexa_tree();
+        _hexa_tree(is_threading);
         break;
     case BIN_TREE:
-        _bin_tree();
+        _bin_tree(is_threading);
         break;
     default:
-        printf("No such collidion algorithm\n");
+        printf("No such collision algorithm\n");
         break;
     }
 }
+void Scene::_upd_pos(double dt)
+{
+    for (size_t i=0; i<_ball_n; i++)
+        upd_ball(_ball_arr[i], dt);
+}
+
+void thread_upd_pos(Scene* scene, vector<Ball>* ball_arr, int from_, int to_, double dt)
+{
+    for (int i=from_; i<to_; i++)
+        scene->upd_ball((*ball_arr)[i], dt);
+}
+void Scene::_upd_pos_mul(double dt)
+{
+    int thread_n = ADD_THREAD_N;
+    vector<thread> thread_arr;
+    int ball_n = _ball_arr.size();
+    thread_arr.reserve(thread_n);
+
+    for (int i = 0; i < thread_n; i++)
+       thread_arr.push_back(thread(thread_upd_pos, this, &_ball_arr,
+                                   (ball_n * i) / thread_n,
+                                   (ball_n * (i+1)) / thread_n,
+                                    dt));
+    for (int i = 0; i < thread_n; i++)
+       thread_arr[i].join();
+}
+
 
 void Scene::_init_state()
 {
@@ -87,7 +119,7 @@ void Scene::_init_state()
         _ball_arr.push_back(b);
     }
 
-    this->update(0.0, BRUTE_FORCE);
+    this->update(0.0, BRUTE_FORCE, false);
 }
 
 void Scene::_collide_border(Ball& ball, double x, double y)

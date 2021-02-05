@@ -15,17 +15,21 @@ SOURCES += \
     algorithms/dynamic_quad_tree.cpp \
     algorithms/hexa_tree.cpp \
     algorithms/quad_tree.cpp \
+    algorithms/rect_tree.cpp \
     ball/ball.cpp \
     main.cpp \
     mainwindow.cpp \
-    scene/scene.cpp
+    scene/scene.cpp \
+    scene/timer_.cpp
 
 HEADERS += \
     algorithms/base_tree.h \
+    algorithms/rect_tree.h \
     algorithms/thread_manager.h \
     ball/ball.h \
     mainwindow.h \
-    scene/scene.h
+    scene/scene.h \
+    scene/timer_.h
 
 FORMS += \
     mainwindow.ui

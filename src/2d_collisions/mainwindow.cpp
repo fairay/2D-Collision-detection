@@ -1,13 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "scene/timer_.h"
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _qscene(new QGraphicsScene(-10, -10, 10, 10)),
-    _scene(30000, 3.0)
+    _scene(100, 3.0)
 {
     ui->setupUi(this);
+    start_counter();
 
     QSize _scene_size = ui->graphicsView->size();
 
@@ -28,17 +30,22 @@ MainWindow::~MainWindow()
 /// Главный цикл обновления
 void MainWindow::_main_cycle()
 {
-    time_t time = clock();
-    time_t pre_time = time - 1;
-    time_t fps_time = clock();
+    double init_time = get_counter();
+    double pre_time = init_time - 1;
+    double fps_time = init_time;
     size_t fps_count = 0;
-    double fps_update = 400.0;
+    double fps_update = 500.0;
 
-    while(clock() - time < 1000*60)
+    bool is_visual = this->_is_visual();
+    bool is_thread = this->_is_threading();
+    upd_t alorithm = this->_get_algorithm();
+
+    while(get_counter() - init_time < 1000*60.0)
     {
-        time_t new_time = clock();
-        _scene.update((double)(new_time - pre_time)/1000, BIN_TREE);
-        // _scene.show(_qscene);//
+        double new_time = get_counter();
+        _scene.update((new_time - pre_time)/1000, alorithm, is_thread);
+        if (is_visual)
+            _scene.show(_qscene);
         fps_count++;
 
         if (new_time - fps_time > fps_update)
@@ -47,12 +54,28 @@ void MainWindow::_main_cycle()
 
             fps_time = new_time;
             fps_count = 0;
-        }
 
+            is_visual = this->_is_visual();
+            is_thread = this->_is_threading();
+            alorithm = this->_get_algorithm();
+        }
 
         pre_time = new_time;
         QCoreApplication::processEvents();
     }
+}
+
+bool MainWindow::_is_threading()
+{
+    return ui->is_multithread->isChecked();
+}
+bool MainWindow::_is_visual()
+{
+    return ui->is_visual->isChecked();
+}
+upd_t MainWindow::_get_algorithm()
+{
+    return static_cast<upd_t>(ui->algorithm->currentIndex());
 }
 
 void MainWindow::on_startButton_clicked()

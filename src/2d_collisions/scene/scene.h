@@ -10,14 +10,15 @@
 #include <vector>
 
 #define MAX_SPEED 100.0
+#define ADD_THREAD_N 8
 
 typedef enum {
-    NO_CHECK,
     BRUTE_FORCE,
     QUAD_TREE,
     DYNAMIC_QUAD_TREE,
     HEXA_TREE,
-    BIN_TREE
+    BIN_TREE,
+    NO_CHECK
 } upd_t;
 
 using collide_func = void (*)(Ball& ball1, Ball& ball2);
@@ -28,7 +29,8 @@ public:
     Scene(size_t n, double r);
 
     void show(std::shared_ptr<QGraphicsScene> &_qscene);
-    void update(double dt, upd_t update_type = NO_CHECK);
+    void update(double dt, upd_t update_type, bool is_threading);
+    void upd_ball(Ball& ball, double dt);
 
     ~Scene();
 private:
@@ -42,15 +44,14 @@ private:
     void _collide_border(Ball& ball, double x, double y);
     static void _collide_balls(Ball& ball1, Ball& ball2);
 
-    void _brute_force();
-    void _quad_tree();
-    // Katya
-    void _dynamic_quad_tree();
-    void _hexa_tree();
+    void _brute_force(bool is_threading);
+    void _quad_tree(bool is_threading);
+    void _dynamic_quad_tree(bool is_threading);
+    void _hexa_tree(bool is_threading);
+    void _bin_tree(bool is_threading);
 
-    // Seva
-    void _bin_tree();
-
+    void _upd_pos(double dt);
+    void _upd_pos_mul(double dt);
 };
 
 #endif // SCENE_H

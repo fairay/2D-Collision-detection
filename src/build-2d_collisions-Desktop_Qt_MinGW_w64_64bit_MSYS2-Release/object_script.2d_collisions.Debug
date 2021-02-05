@@ -4,8 +4,10 @@ debug/brute_force.o
 debug/dynamic_quad_tree.o
 debug/hexa_tree.o
 debug/quad_tree.o
+debug/rect_tree.o
 debug/ball.o
 debug/main.o
 debug/mainwindow.o
 debug/scene.o
+debug/timer_.o
 debug/moc_mainwindow.o

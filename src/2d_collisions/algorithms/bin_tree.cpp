@@ -1,10 +1,11 @@
 #include "base_tree.h"
 #include <iostream>
-#include <thread>
+
 
 #define SPLIT_N 70
 
 using namespace std;
+
 class BinTree: public BaseTree
 {
 public:
@@ -14,7 +15,8 @@ public:
 
     void add_ball(Ball* ball);
     void collide(collide_func f);
-    void collide_mult(collide_func f, size_t deep);
+    void add_ball_mult(Ball* ball);
+    void collide_mult(collide_func f, int deep);
 
     int deep();
 protected:
@@ -26,8 +28,8 @@ protected:
     BinTree* _left_leaf;
     BinTree* _right_leaf;
 
-    virtual void _init_leavs();
-    void _add_ball_leavs(Ball* ball);
+    virtual void _init_leaves();
+    void _add_ball_leavs(Ball* ball, bool is_threading = false);
 };
 
 BinTree::BinTree(Point2d a, Point2d b, Point2d c)
@@ -60,7 +62,7 @@ void BinTree::add_ball(Ball* ball)
         _ball_arr.push_back(ball);
         if (_ball_arr.size() >= _split_n)
         {
-            _init_leavs();
+            _init_leaves();
             for (size_t i=0; i<_split_n; i++)
                 _add_ball_leavs(_ball_arr[i]);
             _ball_arr.clear();
@@ -71,6 +73,28 @@ void BinTree::add_ball(Ball* ball)
         _add_ball_leavs(ball);
     }
 }
+void BinTree::add_ball_mult(Ball *ball)
+{
+    _m.lock();
+    if (_is_leaf)
+    {
+        _ball_arr.push_back(ball);
+        if (_ball_arr.size() >= _split_n)
+        {
+            _init_leaves();
+            for (size_t i=0; i<_split_n; i++)
+                _add_ball_leavs(_ball_arr[i], false);
+            _ball_arr.clear();
+        }
+        _m.unlock();
+    }
+    else
+    {
+        _m.unlock();
+        _add_ball_leavs(ball, true);
+    }
+}
+
 
 void BinTree::collide(collide_func f)
 {
@@ -86,16 +110,7 @@ void BinTree::collide(collide_func f)
     }
 }
 
-void thread_act(BaseTree* tree, collide_func f, size_t deep)
-{
-    if (tree->is_void()) return;
-    if (deep < 8)
-        tree->collide_mult(f, deep);
-    else
-        tree->collide(f);
-}
-
-void BinTree::collide_mult(collide_func f, size_t deep)
+void BinTree::collide_mult(collide_func f, int deep)
 {
     if (_is_leaf)
     {
@@ -103,8 +118,8 @@ void BinTree::collide_mult(collide_func f, size_t deep)
     }
     else
     {
-        thread t1(thread_act, _left_leaf,  f, deep+1);
-        thread_act(_right_leaf, f, deep+1);
+        thread t1(thread_collide_balls, _left_leaf,  f, deep-1);
+        thread_collide_balls(_right_leaf, f, deep-1);
         t1.join();
     }
 }
@@ -118,7 +133,7 @@ int BinTree::deep()
         return max(_left_leaf->deep(), _right_leaf->deep()) + 1;
 }
 
-void BinTree::_init_leavs()
+void BinTree::_init_leaves()
 {
     _is_leaf = false;
 
@@ -140,18 +155,29 @@ void BinTree::_init_leavs()
     }
 }
 
-void BinTree::_add_ball_leavs(Ball* ball)
+void BinTree::_add_ball_leavs(Ball* ball, bool is_threading)
 {
     Point2d p = ball->pos;
     p.x += _right_off.x, p.y += _right_off.y;
     if (vector_mult(_dir, Vector2d(_p_arr[0], p)) >= 0)
-        _right_leaf->add_ball(ball);
+    {
+        if (is_threading)
+            _right_leaf->add_ball_mult(ball);
+        else
+            _right_leaf->add_ball(ball);
+    }
 
     p = ball->pos;
     p.x += _left_off.x, p.y += _left_off.y;
     if (vector_mult(_dir, Vector2d(_p_arr[0], p)) <= 0)
-        _left_leaf->add_ball(ball);
+    {
+        if (is_threading)
+            _left_leaf->add_ball_mult(ball);
+        else
+            _left_leaf->add_ball(ball);
+    }
 }
+
 
 
 class MainBinTree: public BinTree
@@ -162,7 +188,7 @@ public:
 private:
     Point2d _p_arr[4];
 
-    virtual void _init_leavs();
+    virtual void _init_leaves();
 };
 
 MainBinTree::MainBinTree(const Point2d& min_p, const Point2d& max_p)
@@ -174,7 +200,7 @@ MainBinTree::MainBinTree(const Point2d& min_p, const Point2d& max_p)
 }
 MainBinTree::~MainBinTree() {}
 
-void MainBinTree::_init_leavs()
+void MainBinTree::_init_leaves()
 {
     _is_leaf = false;
 
@@ -187,12 +213,22 @@ void MainBinTree::_init_leavs()
     _left_leaf =  new BinTree(_p_arr[0], _p_arr[1], _p_arr[3]);
 }
 
-void Scene::_bin_tree()
+
+
+void Scene::_bin_tree(bool is_threading)
 {
     MainBinTree tree(Point2d(0,0), Point2d(_w, _h));
-    for (size_t i=0; i<_ball_n; i++)
-        tree.add_ball(&_ball_arr[i]);
 
-    //tree.collide(_collide_balls);
-    tree.collide_mult(_collide_balls, 0);
+    if (is_threading)
+    {
+        thread_add_balls(&tree, _ball_arr);
+        tree.collide_mult(_collide_balls, 6);
+    }
+    else
+    {
+        for (size_t i=0; i<_ball_n; i++)
+            tree.add_ball(&_ball_arr[i]);
+
+         tree.collide(_collide_balls);
+    }
 }

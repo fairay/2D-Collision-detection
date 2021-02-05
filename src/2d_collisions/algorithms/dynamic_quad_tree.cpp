@@ -1,39 +1,36 @@
-#include "base_tree.h"
+#include "rect_tree.h"
 #define SPLIT_N 100
 
 using namespace std;
 
 
-class DynamicQuadTree: public BaseTree
+class DynamicQuadTree: public RectTree
 {
 public:
     DynamicQuadTree(Point2d min_p, Point2d max_p);
     ~DynamicQuadTree();
 
-    void count_center();
     void add_ball(Ball* ball);
+
+    void count_center();
     void split_space();
-    void collide(collide_func f);
 private:
-    Point2d _min_p, _max_p;
     Point2d _center;
 
-    DynamicQuadTree* _leaf_arr[4];
-
     void _init_leaves();
-    void _add_ball_leaves(Ball* ball);
 };
 
 DynamicQuadTree::DynamicQuadTree(Point2d min_p, Point2d max_p):
-    _min_p(min_p), _max_p(max_p)
+    RectTree(min_p, max_p)
 {
     _split_n = SPLIT_N;
+    _leaf_n = 4;
 }
 
 DynamicQuadTree::~DynamicQuadTree()
 {
     if (!_is_leaf)
-        for (size_t i=0; i<4; i++)
+        for (size_t i=0; i<_leaf_n; i++)
             delete _leaf_arr[i];
 }
 
@@ -56,9 +53,8 @@ void DynamicQuadTree::count_center()
 
 void DynamicQuadTree::add_ball(Ball* ball)
 {
-    if (_min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
-        _min_p.y - ball->r < ball->pos.y && ball->pos.y < _max_p.y + ball->r)
-            _ball_arr.push_back(ball);
+    if (is_ball_in(ball))
+        _ball_arr.push_back(ball);
 }
 
 void DynamicQuadTree::split_space()
@@ -95,41 +91,16 @@ void DynamicQuadTree::_init_leaves()
     _leaf_arr[3] = new DynamicQuadTree(_center, _max_p);
 }
 
-void DynamicQuadTree::_add_ball_leaves(Ball* ball)
-{
-    for (size_t i=0; i<4; i++)
-        _leaf_arr[i]->add_ball(ball);
-}
 
-void DynamicQuadTree::collide(collide_func f)
-{
-    if (_is_leaf)
-    {
-        if (_ball_arr.size() < 2) return;
-
-        for (size_t i=0; i<_ball_arr.size(); i++)
-            for (size_t j=i+1; j<_ball_arr.size(); j++)
-            {
-                double dist = sqrt(pow(_ball_arr[i]->pos.x - _ball_arr[j]->pos.x, 2) +
-                                   pow(_ball_arr[i]->pos.y - _ball_arr[j]->pos.y, 2));
-                if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
-                    f(*_ball_arr[i], *_ball_arr[j]);
-            }
-    }
-    else
-    {
-        for (size_t i=0; i<4; i++)
-            _leaf_arr[i]->collide(f);
-    }
-}
-
-void Scene::_dynamic_quad_tree()
+void Scene::_dynamic_quad_tree(bool is_threading)
 {
     DynamicQuadTree tree(Point2d(0, 0), Point2d(_w, _h));
     for (size_t i=0; i<_ball_n; i++)
         tree.add_ball(&_ball_arr[i]);
-
     tree.split_space();
 
-    tree.collide(_collide_balls);
+    if (is_threading)
+        tree.collide_mult(_collide_balls, 4);
+    else
+        tree.collide(_collide_balls);
 }
