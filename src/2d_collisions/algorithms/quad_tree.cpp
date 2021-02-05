@@ -155,7 +155,7 @@ void Scene::_quad_tree(bool is_threading)
     if (is_threading)
     {
         thread_add_balls(&tree, _ball_arr);
-        tree.collide_mult(_collide_balls, 4);
+        tree.collide_mult(_collide_balls, 9);//4
     }
     else
     {
