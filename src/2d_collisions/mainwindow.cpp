@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _qscene(new QGraphicsScene(-10, -10, 10, 10)),
-    _scene(1000, 3.0)
+    _scene(100, 3.0)
 {
     ui->setupUi(this);
     start_counter();
@@ -34,7 +34,7 @@ void MainWindow::_main_cycle()
     double pre_time = init_time - 1;
     double fps_time = init_time;
     size_t fps_count = 0;
-    double fps_update = 2000.0;
+    double fps_update = 500.0;
 
     bool is_visual = this->_is_visual();
     bool is_thread = this->_is_threading();

@@ -4,6 +4,7 @@ release/brute_force.o
 release/dynamic_quad_tree.o
 release/hexa_tree.o
 release/quad_tree.o
+release/rect_tree.o
 release/ball.o
 release/main.o
 release/mainwindow.o

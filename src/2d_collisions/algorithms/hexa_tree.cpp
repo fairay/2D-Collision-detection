@@ -20,7 +20,7 @@ private:
     HexaTree* _leaf_arr[9];
 
     void _add_ball_leaves(Ball* ball);
-    void _init_leafs();
+    void _init_leaves();
 };
 
 
@@ -57,7 +57,7 @@ void HexaTree::add_ball(Ball* ball)
             _ball_arr.push_back(ball);
             if (_ball_arr.size() >= _split_n)
             {
-                _init_leafs();
+                _init_leaves();
                 for (size_t i=0; i<_ball_arr.size(); i++)
                     _add_ball_leaves(_ball_arr[i]);
                 _ball_arr.clear();
@@ -97,7 +97,7 @@ void HexaTree::_add_ball_leaves(Ball* ball)
 }
 
 
-void HexaTree::_init_leafs()
+void HexaTree::_init_leaves()
 {
     this->_is_leaf = false;
 

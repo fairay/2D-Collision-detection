@@ -52,7 +52,7 @@ public:
         startButton->setGeometry(QRect(620, 540, 181, 61));
         fps_count = new QLabel(centralwidget);
         fps_count->setObjectName(QString::fromUtf8("fps_count"));
-        fps_count->setGeometry(QRect(730, 504, 47, 20));
+        fps_count->setGeometry(QRect(720, 504, 81, 20));
         algorithm = new QComboBox(centralwidget);
         algorithm->addItem(QString());
         algorithm->addItem(QString());

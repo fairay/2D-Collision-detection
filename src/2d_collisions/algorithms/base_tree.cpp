@@ -1,5 +1,6 @@
 #include "base_tree.h"
 #include <thread>
+#include <iostream>
 
 using namespace std;
 
@@ -8,13 +9,15 @@ BaseTree::~BaseTree() {}
 
 bool BaseTree::is_void()
 {
-    return _ball_arr.size() < 2;
+    return _ball_arr.size() < 2; //&& _is_leaf;
 }
 
 int BaseTree::deep() {return 0;}
 
-void BaseTree::collide_mult(collide_func, size_t) {}
+void BaseTree::collide_mult(collide_func, int) {}
 void BaseTree::add_ball_mult(Ball*) {}
+void BaseTree::_add_ball_leaves(Ball*, bool) {}
+
 
 void BaseTree::_collide_leaf(collide_func f)
 {
@@ -48,4 +51,13 @@ void thread_add_balls(BaseTree* tree, vector<Ball>& ball_arr)
                                    (ball_n * (i+1)) / thread_n));
     for (int i = 0; i < thread_n; i++)
        thread_arr[i].join();
+}
+
+void thread_collide_balls(BaseTree* tree, collide_func f, int deep)
+{
+    if (tree->is_void()) return;
+    if (deep >= 0)
+        tree->collide_mult(f, deep);
+    else
+        tree->collide(f);
 }

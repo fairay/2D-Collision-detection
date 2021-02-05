@@ -40,9 +40,9 @@
    <widget class="QLabel" name="fps_count">
     <property name="geometry">
      <rect>
-      <x>730</x>
+      <x>720</x>
       <y>504</y>
-      <width>47</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
