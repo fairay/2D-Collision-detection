@@ -1,4 +1,7 @@
 #include "base_tree.h"
+#include <thread>
+
+using namespace std;
 
 BaseTree::BaseTree() {}
 BaseTree::~BaseTree() {}
@@ -23,4 +26,26 @@ void BaseTree::_collide_leaf(collide_func f)
             if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
                 f(*_ball_arr[i], *_ball_arr[j]);
         }
+}
+
+
+void _thread_add(BaseTree* tree, vector<Ball>* ball_arr, int from_, int to_)
+{
+    for (int i=from_; i<to_; i++)
+        tree->add_ball_mult(&(*ball_arr)[i]);
+}
+
+void thread_add_balls(BaseTree* tree, vector<Ball>& ball_arr)
+{
+    int thread_n = ADD_THREAD_N;
+    vector<thread> thread_arr;
+    int ball_n = ball_arr.size();
+    thread_arr.reserve(thread_n);
+
+    for (int i = 0; i < thread_n; i++)
+       thread_arr.push_back(thread(_thread_add, tree, &ball_arr,
+                                   (ball_n * i) / thread_n,
+                                   (ball_n * (i+1)) / thread_n));
+    for (int i = 0; i < thread_n; i++)
+       thread_arr[i].join();
 }

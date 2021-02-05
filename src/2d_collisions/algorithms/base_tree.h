@@ -2,6 +2,8 @@
 #define BASE_TREE_H
 
 #include "scene/scene.h"
+#include <thread>
+#include <mutex>
 
 class ThreadManager;
 
@@ -26,5 +28,6 @@ protected:
     void _collide_leaf(collide_func f);
 };
 
+void thread_add_balls(BaseTree* tree, std::vector<Ball> &ball_arr);
 
 #endif // BASE_TREE_H

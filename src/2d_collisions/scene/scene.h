@@ -10,6 +10,7 @@
 #include <vector>
 
 #define MAX_SPEED 100.0
+#define ADD_THREAD_N 8
 
 typedef enum {
     BRUTE_FORCE,
@@ -29,6 +30,7 @@ public:
 
     void show(std::shared_ptr<QGraphicsScene> &_qscene);
     void update(double dt, upd_t update_type, bool is_threading);
+    void upd_ball(Ball& ball, double dt);
 
     ~Scene();
 private:
@@ -48,6 +50,8 @@ private:
     void _hexa_tree(bool is_threading);
     void _bin_tree(bool is_threading);
 
+    void _upd_pos(double dt);
+    void _upd_pos_mul(double dt);
 };
 
 #endif // SCENE_H

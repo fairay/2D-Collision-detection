@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "scene/timer_.h"
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent):
     _scene(1000, 3.0)
 {
     ui->setupUi(this);
+    start_counter();
 
     QSize _scene_size = ui->graphicsView->size();
 
@@ -28,20 +30,20 @@ MainWindow::~MainWindow()
 /// Главный цикл обновления
 void MainWindow::_main_cycle()
 {
-    time_t time = clock();
-    time_t pre_time = time - 1;
-    time_t fps_time = clock();
+    double init_time = get_counter();
+    double pre_time = init_time - 1;
+    double fps_time = init_time;
     size_t fps_count = 0;
-    double fps_update = 400.0;
+    double fps_update = 2000.0;
 
     bool is_visual = this->_is_visual();
     bool is_thread = this->_is_threading();
     upd_t alorithm = this->_get_algorithm();
 
-    while(clock() - time < 1000*60)
+    while(get_counter() - init_time < 1000*60.0)
     {
-        time_t new_time = clock();
-        _scene.update((double)(new_time - pre_time)/1000, alorithm, is_thread);
+        double new_time = get_counter();
+        _scene.update((new_time - pre_time)/1000, alorithm, is_thread);
         if (is_visual)
             _scene.show(_qscene);
         fps_count++;

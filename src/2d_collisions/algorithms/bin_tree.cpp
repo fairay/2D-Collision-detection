@@ -1,7 +1,6 @@
 #include "base_tree.h"
 #include <iostream>
-#include <thread>
-#include <mutex>
+
 
 #define SPLIT_N 70
 
@@ -226,32 +225,21 @@ void MainBinTree::_init_leavs()
 }
 
 
-void thread_add_ball(BaseTree* tree, std::vector<Ball>& ball_arr, int from_, int to_)
-{
-    for (int i=from_; i<to_; i++)
-        tree->add_ball_mult(&ball_arr[i]);
-}
+
 void Scene::_bin_tree(bool is_threading)
 {
     MainBinTree tree(Point2d(0,0), Point2d(_w, _h));
 
-//    for (size_t i=0; i<_ball_n; i++)
-//        tree.add_ball(&_ball_arr[i]);
+    if (is_threading)
+    {
+        thread_add_balls(&tree, _ball_arr);
+        tree.collide_mult(_collide_balls, 0);
+    }
+    else
+    {
+        for (size_t i=0; i<_ball_n; i++)
+            tree.add_ball(&_ball_arr[i]);
 
-    // tree.collide(_collide_balls);
-
-    int thread_n = 8;
-    vector<thread> thread_arr;
-    thread_arr.reserve(thread_n);
-
-    for (int i = 0; i < thread_n; i++)
-       thread_arr.push_back(thread(thread_add_ball, &tree, ref(_ball_arr),
-                                   (_ball_n * i) / thread_n,
-                                   (_ball_n * (i+1)) / thread_n));
-
-    for (int i = 0; i < thread_n; i++)
-       thread_arr[i].join();
-
-
-     tree.collide_mult(_collide_balls, 0);
+         tree.collide(_collide_balls);
+    }
 }
