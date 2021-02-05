@@ -30,5 +30,8 @@ private:
     Scene _scene;
 
     void _main_cycle();
+    bool _is_threading();
+    bool _is_visual();
+    upd_t _get_algorithm();
 };
 #endif // MAINWINDOW_H

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>786</width>
+    <width>810</width>
     <height>647</height>
    </rect>
   </property>
@@ -28,8 +28,8 @@
     <property name="geometry">
      <rect>
       <x>620</x>
-      <y>10</y>
-      <width>161</width>
+      <y>540</y>
+      <width>181</width>
       <height>61</height>
      </rect>
     </property>
@@ -40,14 +40,88 @@
    <widget class="QLabel" name="fps_count">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>90</y>
+      <x>730</x>
+      <y>504</y>
       <width>47</width>
-      <height>14</height>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>0</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="algorithm">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>10</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Полный перебор</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Дерево квадрантов</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Динамический центр</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>hex-дерево</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Бинарное дерево</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QCheckBox" name="is_multithread">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>50</y>
+      <width>181</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Многопоточность</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>499</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>FPS:</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="is_visual">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>80</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Визуализация</string>
     </property>
    </widget>
   </widget>
@@ -56,7 +130,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>786</width>
+     <width>810</width>
      <height>21</height>
     </rect>
    </property>

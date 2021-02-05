@@ -8,4 +8,5 @@ debug/ball.o
 debug/main.o
 debug/mainwindow.o
 debug/scene.o
+debug/timer_.o
 debug/moc_mainwindow.o

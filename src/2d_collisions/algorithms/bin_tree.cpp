@@ -231,7 +231,7 @@ void thread_add_ball(BaseTree* tree, std::vector<Ball>& ball_arr, int from_, int
     for (int i=from_; i<to_; i++)
         tree->add_ball_mult(&ball_arr[i]);
 }
-void Scene::_bin_tree()
+void Scene::_bin_tree(bool is_threading)
 {
     MainBinTree tree(Point2d(0,0), Point2d(_w, _h));
 

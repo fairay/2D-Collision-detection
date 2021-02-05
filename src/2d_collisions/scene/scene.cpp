@@ -27,7 +27,7 @@ void Scene::show(shared_ptr<QGraphicsScene> &_qscene)
     }
 }
 
-void Scene::update(double dt, upd_t update_type)
+void Scene::update(double dt, upd_t update_type, bool is_threading)
 {
     for (size_t i=0; i<_ball_n; i++)
     {
@@ -50,22 +50,22 @@ void Scene::update(double dt, upd_t update_type)
     case NO_CHECK:
         break;
     case BRUTE_FORCE:
-        _brute_force();
+        _brute_force(is_threading);
         break;
     case QUAD_TREE:
-        _quad_tree();
+        _quad_tree(is_threading);
         break;
     case DYNAMIC_QUAD_TREE:
-        _dynamic_quad_tree();
+        _dynamic_quad_tree(is_threading);
         break;
     case HEXA_TREE:
-        _hexa_tree();
+        _hexa_tree(is_threading);
         break;
     case BIN_TREE:
-        _bin_tree();
+        _bin_tree(is_threading);
         break;
     default:
-        printf("No such collidion algorithm\n");
+        printf("No such collision algorithm\n");
         break;
     }
 }
@@ -87,7 +87,7 @@ void Scene::_init_state()
         _ball_arr.push_back(b);
     }
 
-    this->update(0.0, BRUTE_FORCE);
+    this->update(0.0, BRUTE_FORCE, false);
 }
 
 void Scene::_collide_border(Ball& ball, double x, double y)

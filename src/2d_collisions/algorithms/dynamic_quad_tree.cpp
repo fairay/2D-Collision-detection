@@ -123,7 +123,7 @@ void DynamicQuadTree::collide(collide_func f)
     }
 }
 
-void Scene::_dynamic_quad_tree()
+void Scene::_dynamic_quad_tree(bool is_threading)
 {
     DynamicQuadTree tree(Point2d(0, 0), Point2d(_w, _h));
     for (size_t i=0; i<_ball_n; i++)

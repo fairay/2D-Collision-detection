@@ -1,6 +1,6 @@
 #include "scene/scene.h"
 
-void Scene::_brute_force()
+void Scene::_brute_force(bool is_threading)
 {
     for (size_t i=0; i<_ball_n; i++)
         for (size_t j=i+1; j<_ball_n; j++)

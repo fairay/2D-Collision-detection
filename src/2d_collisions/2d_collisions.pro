@@ -18,14 +18,16 @@ SOURCES += \
     ball/ball.cpp \
     main.cpp \
     mainwindow.cpp \
-    scene/scene.cpp
+    scene/scene.cpp \
+    scene/timer_.cpp
 
 HEADERS += \
     algorithms/base_tree.h \
     algorithms/thread_manager.h \
     ball/ball.h \
     mainwindow.h \
-    scene/scene.h
+    scene/scene.h \
+    scene/timer_.h
 
 FORMS += \
     mainwindow.ui
