@@ -1,32 +1,28 @@
-#include "base_tree.h"
+#include "rect_tree.h"
 #include <iostream>
 #define SPLIT_N 100
 
 using namespace std;
 
 
-class HexaTree: public BaseTree
+class HexaTree: public RectTree
 {
 public:
     HexaTree(Point2d min_p, Point2d max_p);
     ~HexaTree();
 
-    void add_ball(Ball* ball);
-    void collide(collide_func f);
+    bool is_ball_in(Ball *ball);
 private:
-    Point2d _min_p, _max_p;
     Point2d _cnt0, _cnt1, _cnt2, _cnt3;
 
-    HexaTree* _leaf_arr[9];
-
-    void _add_ball_leaves(Ball* ball);
     void _init_leaves();
 };
 
 
-HexaTree::HexaTree(Point2d min_p, Point2d max_p): _min_p(min_p), _max_p(max_p)
+HexaTree::HexaTree(Point2d min_p, Point2d max_p): RectTree(min_p, max_p)
 {
     _split_n = SPLIT_N;
+    _leaf_n = 9;
 
     _cnt0.x = max_p.x / 3 + 2.0/3 * min_p.x;
     _cnt0.y = max_p.y / 3 + 2.0/3 * min_p.y;
@@ -47,6 +43,7 @@ HexaTree::~HexaTree()
             delete _leaf_arr[i];
 }
 
+/*
 void HexaTree::add_ball(Ball* ball)
 {
     if (_min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
@@ -95,7 +92,13 @@ void HexaTree::_add_ball_leaves(Ball* ball)
     for (size_t i=0; i<9; i++)
         _leaf_arr[i]->add_ball(ball);
 }
+*/
 
+bool HexaTree::is_ball_in(Ball *ball)
+{
+    return _min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
+            _min_p.y - ball->r < ball->pos.y && ball->pos.y < _max_p.y + ball->r;
+}
 
 void HexaTree::_init_leaves()
 {
@@ -139,8 +142,16 @@ void HexaTree::_init_leaves()
 void Scene::_hexa_tree(bool is_threading)
 {
     HexaTree tree(Point2d(0, 0), Point2d(_w, _h));
-    for (size_t i=0; i<_ball_n; i++)
-        tree.add_ball(&_ball_arr[i]);
+    if (is_threading)
+    {
+        thread_add_balls(&tree, _ball_arr);
+        tree.collide_mult(_collide_balls, 3);
+    }
+    else
+    {
+        for (size_t i=0; i<_ball_n; i++)
+            tree.add_ball(&_ball_arr[i]);
 
-    tree.collide(_collide_balls);
+        tree.collide(_collide_balls);
+    }
 }
