@@ -13,6 +13,7 @@ public:
 
     virtual void add_ball(Ball* ball) = 0;
     virtual void collide(collide_func f) = 0;
+    virtual void add_ball_mult(Ball* ball);
     virtual void collide_mult(collide_func f, size_t deep);
 
     bool is_void();

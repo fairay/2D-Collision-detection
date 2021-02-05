@@ -1,10 +1,12 @@
 #include "base_tree.h"
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 #define SPLIT_N 70
 
 using namespace std;
+
 class BinTree: public BaseTree
 {
 public:
@@ -14,11 +16,13 @@ public:
 
     void add_ball(Ball* ball);
     void collide(collide_func f);
+    void add_ball_mult(Ball* ball);
     void collide_mult(collide_func f, size_t deep);
 
     int deep();
 protected:
     Point2d _p_arr[3];
+    mutex _m;
 
     Vector2d _dir;
     Vector2d _right_off, _left_off;
@@ -28,6 +32,7 @@ protected:
 
     virtual void _init_leavs();
     void _add_ball_leavs(Ball* ball);
+    void _add_leavs_mult(Ball* ball);
 };
 
 BinTree::BinTree(Point2d a, Point2d b, Point2d c)
@@ -71,6 +76,28 @@ void BinTree::add_ball(Ball* ball)
         _add_ball_leavs(ball);
     }
 }
+void BinTree::add_ball_mult(Ball *ball)
+{
+    _m.lock();
+    if (_is_leaf)
+    {
+        _ball_arr.push_back(ball);
+        if (_ball_arr.size() >= _split_n)
+        {
+            _init_leavs();
+            for (size_t i=0; i<_split_n; i++)
+                _add_leavs_mult(_ball_arr[i]);
+            _ball_arr.clear();
+        }
+        _m.unlock();
+    }
+    else
+    {
+        _m.unlock();
+        _add_leavs_mult(ball);
+    }
+}
+
 
 void BinTree::collide(collide_func f)
 {
@@ -94,7 +121,6 @@ void thread_act(BaseTree* tree, collide_func f, size_t deep)
     else
         tree->collide(f);
 }
-
 void BinTree::collide_mult(collide_func f, size_t deep)
 {
     if (_is_leaf)
@@ -152,6 +178,18 @@ void BinTree::_add_ball_leavs(Ball* ball)
     if (vector_mult(_dir, Vector2d(_p_arr[0], p)) <= 0)
         _left_leaf->add_ball(ball);
 }
+void BinTree::_add_leavs_mult(Ball* ball)
+{
+    Point2d p = ball->pos;
+    p.x += _right_off.x, p.y += _right_off.y;
+    if (vector_mult(_dir, Vector2d(_p_arr[0], p)) >= 0)
+        _right_leaf->add_ball_mult(ball);
+
+    p = ball->pos;
+    p.x += _left_off.x, p.y += _left_off.y;
+    if (vector_mult(_dir, Vector2d(_p_arr[0], p)) <= 0)
+        _left_leaf->add_ball_mult(ball);
+}
 
 
 class MainBinTree: public BinTree
@@ -187,12 +225,33 @@ void MainBinTree::_init_leavs()
     _left_leaf =  new BinTree(_p_arr[0], _p_arr[1], _p_arr[3]);
 }
 
+
+void thread_add_ball(BaseTree* tree, std::vector<Ball>& ball_arr, int from_, int to_)
+{
+    for (int i=from_; i<to_; i++)
+        tree->add_ball_mult(&ball_arr[i]);
+}
 void Scene::_bin_tree()
 {
     MainBinTree tree(Point2d(0,0), Point2d(_w, _h));
-    for (size_t i=0; i<_ball_n; i++)
-        tree.add_ball(&_ball_arr[i]);
 
-    tree.collide(_collide_balls);
-    // tree.collide_mult(_collide_balls, 0);
+//    for (size_t i=0; i<_ball_n; i++)
+//        tree.add_ball(&_ball_arr[i]);
+
+    // tree.collide(_collide_balls);
+
+    int thread_n = 8;
+    vector<thread> thread_arr;
+    thread_arr.reserve(thread_n);
+
+    for (int i = 0; i < thread_n; i++)
+       thread_arr.push_back(thread(thread_add_ball, &tree, ref(_ball_arr),
+                                   (_ball_n * i) / thread_n,
+                                   (_ball_n * (i+1)) / thread_n));
+
+    for (int i = 0; i < thread_n; i++)
+       thread_arr[i].join();
+
+
+     tree.collide_mult(_collide_balls, 0);
 }

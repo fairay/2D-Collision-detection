@@ -10,7 +10,8 @@ bool BaseTree::is_void()
 
 int BaseTree::deep() {return 0;}
 
-void BaseTree::collide_mult(collide_func f, size_t deep) {}
+void BaseTree::collide_mult(collide_func, size_t) {}
+void BaseTree::add_ball_mult(Ball*) {}
 
 void BaseTree::_collide_leaf(collide_func f)
 {
