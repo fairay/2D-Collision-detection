@@ -8,6 +8,7 @@
 #include <memory>
 #include <random>
 #include <vector>
+#include <array>
 
 #define MAX_SPEED 100.0
 #define ADD_THREAD_N 8

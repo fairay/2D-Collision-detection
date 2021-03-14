@@ -45,7 +45,7 @@ void Scene::upd_ball(Ball& ball, double dt)
 
 void Scene::update(double dt, upd_t update_type, bool is_threading)
 {
-    if (is_threading)
+    if (false)  // is_threading
         _upd_pos_mul(dt);
     else
         _upd_pos(dt);
@@ -88,15 +88,14 @@ void thread_upd_pos(Scene* scene, vector<Ball>* ball_arr, int from_, int to_, do
 void Scene::_upd_pos_mul(double dt)
 {
     int thread_n = ADD_THREAD_N;
-    vector<thread> thread_arr;
+    array<thread, ADD_THREAD_N> thread_arr;
     int ball_n = _ball_arr.size();
-    thread_arr.reserve(thread_n);
 
     for (int i = 0; i < thread_n; i++)
-       thread_arr.push_back(thread(thread_upd_pos, this, &_ball_arr,
+       thread_arr[i] = thread(thread_upd_pos, this, &_ball_arr,
                                    (ball_n * i) / thread_n,
                                    (ball_n * (i+1)) / thread_n,
-                                    dt));
+                                    dt);
     for (int i = 0; i < thread_n; i++)
        thread_arr[i].join();
 }

@@ -20,6 +20,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void update_scene(double dt, upd_t update_type, bool is_threading);
+
 private slots:
     void on_startButton_clicked();
 

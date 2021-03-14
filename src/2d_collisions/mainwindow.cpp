@@ -1,12 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "scene/timer_.h"
+#include <future>
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _qscene(new QGraphicsScene(-10, -10, 10, 10)),
-    _scene(100, 3.0)
+    _scene(2000, 3.0)
 {
     ui->setupUi(this);
     start_counter();
@@ -27,6 +28,11 @@ MainWindow::~MainWindow()
 }
 
 
+void MainWindow::update_scene(double dt, upd_t update_type, bool is_threading)
+{
+    _scene.update(dt, update_type, is_threading);
+}
+
 /// Главный цикл обновления
 void MainWindow::_main_cycle()
 {
@@ -44,6 +50,11 @@ void MainWindow::_main_cycle()
     {
         double new_time = get_counter();
         _scene.update((new_time - pre_time)/1000, alorithm, is_thread);
+
+//        auto as = async(std::launch::async, &Scene::update, &_scene,
+//                        (new_time - pre_time)/1000, alorithm, is_thread);
+//        as.get();
+
         if (is_visual)
             _scene.show(_qscene);
         fps_count++;

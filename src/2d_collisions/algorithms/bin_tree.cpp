@@ -1,5 +1,6 @@
 #include "base_tree.h"
 #include <iostream>
+#include <future>
 
 
 #define SPLIT_N 70
@@ -30,6 +31,7 @@ protected:
 
     virtual void _init_leaves();
     void _add_ball_leavs(Ball* ball, bool is_threading = false);
+    void _tcb(collide_func f, int deep);
 };
 
 BinTree::BinTree(Point2d a, Point2d b, Point2d c)
@@ -129,6 +131,18 @@ void BinTree::collide_mult(collide_func f, int deep)
         thread t1(thread_collide_balls, _left_leaf,  f, deep-1);
         thread_collide_balls(_right_leaf, f, deep-1);
         t1.join();
+
+//        thread t1(&BinTree::_tcb, _left_leaf,  f, deep-1);
+//        _right_leaf->_tcb(f, deep-1);
+//        t1.join();
+
+//        auto as = async(launch::async, thread_collide_balls,
+//                        _left_leaf,  f, deep-1);
+//        thread_collide_balls(_right_leaf, f, deep-1);
+//        as.get();
+
+//         thread_collide_balls(_left_leaf, f, deep-1);
+//         thread_collide_balls(_right_leaf, f, deep-1);
     }
 }
 
@@ -186,6 +200,14 @@ void BinTree::_add_ball_leavs(Ball* ball, bool is_threading)
     }
 }
 
+void BinTree::_tcb(collide_func f, int deep)
+{
+    if (this->is_void()) return;
+    if (deep >= 0)
+        this->collide_mult(f, deep);
+    else
+        this->collide(f);
+}
 
 
 class MainBinTree: public BinTree
@@ -229,8 +251,11 @@ void Scene::_bin_tree(bool is_threading)
 
     if (is_threading)
     {
-        thread_add_balls(&tree, _ball_arr);
-        tree.collide_mult(_collide_balls, 6);
+        //thread_add_balls(&tree, _ball_arr);
+        for (size_t i=0; i<_ball_n; i++)
+            tree.add_ball(&_ball_arr[i]);
+
+        tree.collide_mult(_collide_balls, 3);
     }
     else
     {

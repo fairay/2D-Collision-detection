@@ -9,7 +9,8 @@ BaseTree::~BaseTree() {}
 
 bool BaseTree::is_void()
 {
-    return _ball_arr.size() < 2; //&& _is_leaf;
+    //return _ball_arr.size() < 2; //&& _is_leaf;
+    return _is_leaf && (_ball_arr.size() < 2);
 }
 
 int BaseTree::deep() {return 0;}
