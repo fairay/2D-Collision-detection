@@ -4,6 +4,7 @@
 #include "scene/scene.h"
 #include <thread>
 #include <mutex>
+#include <vector>
 
 class ThreadManager;
 
@@ -17,6 +18,8 @@ public:
     virtual void collide(collide_func f) = 0;
     virtual void add_ball_mult(Ball* ball);
     virtual void collide_mult(collide_func f, int deep);
+
+    virtual void select_nodes(std::vector<BaseTree*> &v, int to, int from=0);
 
     bool is_void();
     virtual int deep();

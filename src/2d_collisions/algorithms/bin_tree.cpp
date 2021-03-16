@@ -2,6 +2,7 @@
 #include <iostream>
 #include <future>
 
+// #include "omp.h"
 
 #define SPLIT_N 70
 
@@ -18,6 +19,8 @@ public:
     void collide(collide_func f);
     void add_ball_mult(Ball* ball);
     void collide_mult(collide_func f, int deep);
+
+    void select_nodes(std::vector<BaseTree*>& v, int to, int from=0);
 
     int deep();
 protected:
@@ -146,6 +149,19 @@ void BinTree::collide_mult(collide_func f, int deep)
     }
 }
 
+void BinTree::select_nodes(std::vector<BaseTree*>& v, int to, int from)
+{
+    if (to - from == 1)
+    {
+        v[from] = this;
+    }
+    else
+    {
+        int border = (to + from) / 2;
+        this->_left_leaf->select_nodes(v, border, from);
+        this->_right_leaf->select_nodes(v, to, border);
+    }
+}
 
 int BinTree::deep()
 {
@@ -243,7 +259,10 @@ void MainBinTree::_init_leaves()
     _left_leaf =  new BinTree(_p_arr[0], _p_arr[1], _p_arr[3]);
 }
 
-
+void roflan_f(BaseTree* tree, collide_func f)
+{
+    tree->collide(f);
+}
 
 void Scene::_bin_tree(bool is_threading)
 {
@@ -255,7 +274,26 @@ void Scene::_bin_tree(bool is_threading)
         for (size_t i=0; i<_ball_n; i++)
             tree.add_ball(&_ball_arr[i]);
 
-        tree.collide_mult(_collide_balls, 3);
+        // tree.collide_mult(_collide_balls, 2);
+
+        int thread_n = 8;
+        vector<BaseTree*> v;
+        v.reserve(thread_n);
+        tree.select_nodes(v, thread_n);
+
+        vector<thread> thread_arr;
+        thread_arr.reserve(thread_n);
+
+        #pragma omp parallel for num_threads(8)
+        for (int i=0; i<thread_n; i++)
+        {
+            //thread_arr.push_back(thread(roflan_f, v[i], _collide_balls));
+            // roflan_f(v[i], _collide_balls);
+            v[i]->collide(_collide_balls);
+        }
+
+//        for (int i=0; i<thread_n; i++)
+//            thread_arr[i].join();
     }
     else
     {

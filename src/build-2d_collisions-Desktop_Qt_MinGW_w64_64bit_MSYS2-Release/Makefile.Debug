@@ -15,11 +15,11 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -march=nocona -mtune=core2 -Wa,-mbig-obj -g -Wall -Wextra -Wextra $(DEFINES)
-CXXFLAGS      = -fno-keep-inline-dllexport -g -std=gnu++11 -Wall -Wextra -Wextra -fexceptions -mthreads $(DEFINES)
+CXXFLAGS      = -fno-keep-inline-dllexport -fopenmp -g -std=gnu++11 -Wall -Wextra -Wextra -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I../2d_collisions -I. -I../../../../msys64/mingw64/include/QtWidgets -I../../../../msys64/mingw64/include/QtGui -I../../../../msys64/mingw64/include/QtCore -Idebug -I. -I/include -I../../../../msys64/mingw64/share/qt5/mkspecs/win32-g++ 
 LINKER      =        g++
-LFLAGS        =        -Wl,--dynamicbase,--high-entropy-va,--nxcompat,--default-image-base-high -Wl,-subsystem,windows -mthreads
-LIBS        =        D:/msys64/mingw64/lib/libQt5Widgets.dll.a D:/msys64/mingw64/lib/libQt5Gui.dll.a D:/msys64/mingw64/lib/libQt5Core.dll.a  -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 D:/msys64/mingw64/lib/libqtmain.a -lshell32 
+LFLAGS        =        -Wl,--dynamicbase,--high-entropy-va,--nxcompat,--default-image-base-high -fopenmp -Wl,-subsystem,windows -mthreads
+LIBS        =        -fopenmp D:/msys64/mingw64/lib/libQt5Widgets.dll.a D:/msys64/mingw64/lib/libQt5Gui.dll.a D:/msys64/mingw64/lib/libQt5Core.dll.a  -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 D:/msys64/mingw64/lib/libqtmain.a -lshell32 
 QMAKE         = D:/msys64/mingw64/bin/qmake.exe
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -139,7 +139,7 @@ compiler_moc_predefs_make_all: debug/moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) debug/moc_predefs.h
 debug/moc_predefs.h: ../../../../msys64/mingw64/share/qt5/mkspecs/features/data/dummy.cpp
-	g++ -fno-keep-inline-dllexport -g -std=gnu++11 -Wall -Wextra -Wextra -dM -E -o debug/moc_predefs.h ../../../../msys64/mingw64/share/qt5/mkspecs/features/data/dummy.cpp
+	g++ -fno-keep-inline-dllexport -fopenmp -g -std=gnu++11 -Wall -Wextra -Wextra -dM -E -o debug/moc_predefs.h ../../../../msys64/mingw64/share/qt5/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: debug/moc_mainwindow.cpp
 compiler_moc_header_clean:
@@ -206,7 +206,8 @@ debug/brute_force.o: ../2d_collisions/algorithms/brute_force.cpp ../2d_collision
 		../../../../msys64/mingw64/include/QtWidgets/qgraphicsscene.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/brute_force.o ../2d_collisions/algorithms/brute_force.cpp
 
-debug/dynamic_quad_tree.o: ../2d_collisions/algorithms/dynamic_quad_tree.cpp ../2d_collisions/algorithms/base_tree.h \
+debug/dynamic_quad_tree.o: ../2d_collisions/algorithms/dynamic_quad_tree.cpp ../2d_collisions/algorithms/rect_tree.h \
+		../2d_collisions/algorithms/base_tree.h \
 		../2d_collisions/scene/scene.h \
 		../2d_collisions/ball/ball.h \
 		../../../../msys64/mingw64/include/QtGui/QColor \
@@ -215,7 +216,8 @@ debug/dynamic_quad_tree.o: ../2d_collisions/algorithms/dynamic_quad_tree.cpp ../
 		../../../../msys64/mingw64/include/QtWidgets/qgraphicsscene.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/dynamic_quad_tree.o ../2d_collisions/algorithms/dynamic_quad_tree.cpp
 
-debug/hexa_tree.o: ../2d_collisions/algorithms/hexa_tree.cpp ../2d_collisions/algorithms/base_tree.h \
+debug/hexa_tree.o: ../2d_collisions/algorithms/hexa_tree.cpp ../2d_collisions/algorithms/rect_tree.h \
+		../2d_collisions/algorithms/base_tree.h \
 		../2d_collisions/scene/scene.h \
 		../2d_collisions/ball/ball.h \
 		../../../../msys64/mingw64/include/QtGui/QColor \
@@ -258,6 +260,7 @@ debug/main.o: ../2d_collisions/main.cpp ../2d_collisions/mainwindow.h \
 		../2d_collisions/ball/ball.h \
 		../../../../msys64/mingw64/include/QtGui/QColor \
 		../../../../msys64/mingw64/include/QtGui/qcolor.h \
+		../2d_collisions/scene/timer_.h \
 		../../../../msys64/mingw64/include/QtWidgets/QApplication \
 		../../../../msys64/mingw64/include/QtWidgets/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/main.o ../2d_collisions/main.cpp

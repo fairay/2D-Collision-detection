@@ -2,6 +2,7 @@
 #include "scene/timer_.h"
 
 #include <QApplication>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -14,10 +15,10 @@ int main(int argc, char *argv[])
     size_t fps_count = 0;
     double fps_update = 500.0;
 
-    bool is_thread = false;
+    bool is_thread = true;
     upd_t alorithm = BIN_TREE;
 
-    while(get_counter() - init_time < 1000*5.0)
+    while (get_counter() - init_time < 1000*5.0)
     {
         double new_time = get_counter();
         _scene.update((new_time - pre_time)/1000, alorithm, is_thread);

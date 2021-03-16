@@ -32,6 +32,7 @@ void BaseTree::_collide_leaf(collide_func f)
         }
 }
 
+void BaseTree::select_nodes(std::vector<BaseTree*>&, int, int) {}
 
 void _thread_add(BaseTree* tree, vector<Ball>* ball_arr, int from_, int to_)
 {
