@@ -1,4 +1,5 @@
 debug/base_tree.o
+debug/bin_algorithm.o
 debug/bin_tree.o
 debug/brute_force.o
 debug/dynamic_quad_tree.o

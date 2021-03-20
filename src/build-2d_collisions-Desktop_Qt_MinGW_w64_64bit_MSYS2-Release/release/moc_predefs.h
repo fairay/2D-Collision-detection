@@ -1,4 +1,6 @@
+#define __SSE2_MATH__ 1
 #define __DBL_MIN_EXP__ (-1021)
+#define __LDBL_MANT_DIG__ 64
 #define __cpp_attributes 200809L
 #define __UINT_LEAST16_MAX__ 0xffff
 #define __ATOMIC_ACQUIRE 2
@@ -8,7 +10,6 @@
 #define __UINT_LEAST8_TYPE__ unsigned char
 #define __SIZEOF_FLOAT80__ 16
 #define __INTMAX_C(c) c ## LL
-#define __CHAR_BIT__ 8
 #define __MINGW32__ 1
 #define __UINT8_MAX__ 0xff
 #define __SCHAR_WIDTH__ 8
@@ -21,7 +22,6 @@
 #define __WCHAR_MAX__ 0xffff
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 1
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_2 1
-#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 1
 #define __DBL_DENORM_MIN__ double(4.94065645841246544176568792868221372e-324L)
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_8 1
 #define __GCC_ATOMIC_CHAR_LOCK_FREE 2
@@ -30,14 +30,15 @@
 #define __FLT_EVAL_METHOD__ 0
 #define __cpp_binary_literals 201304L
 #define __FLT64_DECIMAL_DIG__ 17
+#define __FLT128_HAS_QUIET_NAN__ 1
 #define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
 #define __cpp_variadic_templates 200704L
 #define __UINT_FAST64_MAX__ 0xffffffffffffffffULL
-#define __SIG_ATOMIC_TYPE__ int
 #define __DBL_MIN_10_EXP__ (-307)
 #define __FINITE_MATH_ONLY__ 0
 #define __FLT32X_MAX_EXP__ 1024
 #define __FLT32_HAS_DENORM__ 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 1
 #define __UINT_FAST8_MAX__ 0xff
 #define __cpp_rvalue_reference 200610L
 #define __FLT32_MAX_10_EXP__ 38
@@ -49,6 +50,7 @@
 #define __SHRT_MAX__ 0x7fff
 #define __LDBL_MAX__ 1.18973149535723176502126385303097021e+4932L
 #define __FLT64X_MAX_10_EXP__ 4932
+#define __OPTIMIZE__ 1
 #define __FLT64X_HAS_QUIET_NAN__ 1
 #define __UINT_LEAST8_MAX__ 0xff
 #define __GCC_ATOMIC_BOOL_LOCK_FREE 2
@@ -56,11 +58,12 @@
 #define __UINTMAX_TYPE__ long long unsigned int
 #define __DEC32_EPSILON__ 1E-6DF
 #define __FLT_EVAL_METHOD_TS_18661_3__ 0
-#define __OPTIMIZE__ 1
 #define __UINT32_MAX__ 0xffffffffU
 #define __GXX_EXPERIMENTAL_CXX0X__ 1
+#define __INT_FAST32_WIDTH__ 32
 #define __FLT128_MIN_EXP__ (-16381)
 #define __WINT_MIN__ 0
+#define __CHAR_BIT__ 8
 #define __FLT128_MIN_10_EXP__ (-4931)
 #define __INT_LEAST16_WIDTH__ 16
 #define __SCHAR_MAX__ 0x7f
@@ -96,7 +99,6 @@
 #define __FLT64X_MIN_10_EXP__ (-4931)
 #define __LDBL_HAS_QUIET_NAN__ 1
 #define __FLT64_MANT_DIG__ 53
-#define _REENTRANT 1
 #define __FLT64X_MANT_DIG__ 64
 #define __GNUC__ 10
 #define _cdecl __attribute__((__cdecl__))
@@ -106,13 +108,14 @@
 #define __SIZEOF_LONG_DOUBLE__ 16
 #define __BIGGEST_ALIGNMENT__ 16
 #define __STDC_UTF_16__ 1
+#define __k8__ 1
 #define __FLT64_MAX_10_EXP__ 308
 #define __cpp_delegating_constructors 200604L
 #define __FLT32_HAS_INFINITY__ 1
 #define __DBL_MAX__ double(1.79769313486231570814527423731704357e+308L)
 #define _thiscall __attribute__((__thiscall__))
 #define __cpp_raw_strings 200710L
-#define __INT_FAST32_MAX__ 0x7fffffff
+#define __LDBL_HAS_DENORM__ 1
 #define __WINNT 1
 #define __DBL_HAS_INFINITY__ 1
 #define __SIZEOF_FLOAT__ 4
@@ -126,7 +129,6 @@
 #define __INT_FAST16_TYPE__ short int
 #define __MMX_WITH_SSE__ 1
 #define _fastcall __attribute__((__fastcall__))
-#define __LDBL_HAS_DENORM__ 1
 #define __cplusplus 201103L
 #define __cpp_ref_qualifiers 200710L
 #define __DEC32_MIN__ 1E-95DF
@@ -136,7 +138,6 @@
 #define __WCHAR_WIDTH__ 16
 #define __FLT32_MAX__ 3.40282346638528859811704183484516925e+38F32
 #define __DEC128_EPSILON__ 1E-33DL
-#define __SSE2_MATH__ 1
 #define __ATOMIC_HLE_RELEASE 131072
 #define __WIN32__ 1
 #define __PTRDIFF_MAX__ 0x7fffffffffffffffLL
@@ -173,6 +174,7 @@
 #define __DEC128_MIN__ 1E-6143DL
 #define __REGISTER_PREFIX__ 
 #define __UINT16_MAX__ 0xffff
+#define __INTMAX_WIDTH__ 64
 #define __cdecl __attribute__((__cdecl__))
 #define __LDBL_HAS_INFINITY__ 1
 #define __FLT32_MIN__ 1.17549435082228750796873653722224568e-38F32
@@ -192,6 +194,7 @@
 #define __FLT128_MAX_EXP__ 16384
 #define __FLT32_MANT_DIG__ 24
 #define __FLOAT_WORD_ORDER__ __ORDER_LITTLE_ENDIAN__
+#define _MT 1
 #define __FLT128_HAS_DENORM__ 1
 #define __FLT32_DECIMAL_DIG__ 9
 #define __FLT128_DIG__ 33
@@ -206,6 +209,7 @@
 #define __UINT64_MAX__ 0xffffffffffffffffULL
 #define __FLT64X_DIG__ 18
 #define __INT8_TYPE__ signed char
+#define __SIG_ATOMIC_TYPE__ int
 #define __GCC_ASM_FLAG_OUTPUTS__ 1
 #define __UINT32_TYPE__ unsigned int
 #define __FLT_RADIX__ 2
@@ -223,7 +227,6 @@
 #define __FLT32X_MIN_EXP__ (-1021)
 #define __DEC32_SUBNORMAL_MIN__ 0.000001E-95DF
 #define __MSVCRT__ 1
-#define __INT_FAST16_MAX__ 0x7fff
 #define __FLT64_DIG__ 15
 #define __UINT_FAST32_MAX__ 0xffffffffU
 #define __UINT_LEAST64_TYPE__ long long unsigned int
@@ -236,7 +239,6 @@
 #define __cpp_unicode_literals 200710L
 #define __UINT_FAST16_TYPE__ short unsigned int
 #define __DEC64_MAX__ 9.999999999999999E384DD
-#define __INT_FAST32_WIDTH__ 32
 #define __CHAR16_TYPE__ short unsigned int
 #define __PRAGMA_REDEFINE_EXTNAME 1
 #define __SIZE_WIDTH__ 64
@@ -256,19 +258,17 @@
 #define __FLT128_MAX__ 1.18973149535723176508575932662800702e+4932F128
 #define __INTPTR_MAX__ 0x7fffffffffffffffLL
 #define __FLT64_HAS_QUIET_NAN__ 1
+#define __INT_FAST16_MAX__ 0x7fff
 #define __stdcall __attribute__((__stdcall__))
-#define __FLT32_MIN_10_EXP__ (-37)
 #define __EXCEPTIONS 1
 #define __GXX_MERGED_TYPEINFO_NAMES 0
 #define __PTRDIFF_WIDTH__ 64
-#define __LDBL_MANT_DIG__ 64
 #define __cpp_range_based_for 200907L
 #define __FLT64_HAS_INFINITY__ 1
 #define __FLT64X_MAX__ 1.18973149535723176502126385303097021e+4932F64x
 #define __SIG_ATOMIC_MIN__ (-__SIG_ATOMIC_MAX__ - 1)
 #define __GCC_ATOMIC_LONG_LOCK_FREE 2
 #define __DEC32_MANT_DIG__ 7
-#define __k8__ 1
 #define __INTPTR_TYPE__ long long int
 #define __UINT16_TYPE__ short unsigned int
 #define __WCHAR_TYPE__ short unsigned int
@@ -319,15 +319,16 @@
 #define __INT_LEAST32_TYPE__ int
 #define __SIZEOF_WCHAR_T__ 2
 #define __GNUC_PATCHLEVEL__ 0
+#define __INT_FAST32_MAX__ 0x7fffffff
 #define __FLT128_NORM_MAX__ 1.18973149535723176508575932662800702e+4932F128
 #define __FLT64_NORM_MAX__ 1.79769313486231570814527423731704357e+308F64
-#define __FLT128_HAS_QUIET_NAN__ 1
 #define __INTMAX_MAX__ 0x7fffffffffffffffLL
 #define __INT_FAST8_TYPE__ signed char
 #define __fastcall __attribute__((__fastcall__))
 #define __FLT64X_MIN__ 3.36210314311209350626267781732175260e-4932F64x
 #define __GNUC_STDC_INLINE__ 1
 #define __FLT64_HAS_DENORM__ 1
+#define _OPENMP 201511
 #define __FLT32_EPSILON__ 1.19209289550781250000000000000000000e-7F32
 #define __DBL_DECIMAL_DIG__ 17
 #define __STDC_UTF_32__ 1
@@ -337,7 +338,6 @@
 #define __DBL_NORM_MAX__ double(1.79769313486231570814527423731704357e+308L)
 #define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
 #define __MINGW64__ 1
-#define __INTMAX_WIDTH__ 64
 #define __cpp_runtime_arrays 198712L
 #define __UINT64_TYPE__ long long unsigned int
 #define __UINT32_C(c) c ## U
@@ -350,6 +350,7 @@
 #define __UINT_FAST32_TYPE__ unsigned int
 #define __FLT32X_NORM_MAX__ 1.79769313486231570814527423731704357e+308F32x
 #define __CHAR32_TYPE__ unsigned int
+#define __FLT32_MIN_10_EXP__ (-37)
 #define __FLT_MAX__ 3.40282346638528859811704183484516925e+38F
 #define __cpp_constexpr 200704L
 #define __SSE2__ 1

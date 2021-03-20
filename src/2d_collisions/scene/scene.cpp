@@ -69,6 +69,9 @@ void Scene::update(double dt, upd_t update_type, bool is_threading)
     case BIN_TREE:
         _bin_tree(is_threading);
         break;
+    case BIN_ALG:
+        _bin_alg(is_threading);
+        break;
     default:
         printf("No such collision algorithm\n");
         break;

@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    Scene _scene(2000, 3.0);
+    Scene _scene(1300, 3.0);
 
     start_counter();
     double init_time = get_counter();
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     double fps_update = 500.0;
 
     bool is_thread = true;
-    upd_t alorithm = BIN_TREE;
+    upd_t alorithm = BIN_ALG;
 
     while (get_counter() - init_time < 1000*5.0)
     {

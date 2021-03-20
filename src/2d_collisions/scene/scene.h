@@ -19,6 +19,7 @@ typedef enum {
     DYNAMIC_QUAD_TREE,
     HEXA_TREE,
     BIN_TREE,
+    BIN_ALG,
     NO_CHECK
 } upd_t;
 
@@ -50,6 +51,7 @@ private:
     void _dynamic_quad_tree(bool is_threading);
     void _hexa_tree(bool is_threading);
     void _bin_tree(bool is_threading);
+    void _bin_alg(bool is_threading);
 
     void _upd_pos(double dt);
     void _upd_pos_mul(double dt);

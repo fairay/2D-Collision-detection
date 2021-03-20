@@ -84,6 +84,11 @@
       <string>Бинарное дерево</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>Алгоритм корзин</string>
+     </property>
+    </item>
    </widget>
    <widget class="QCheckBox" name="is_multithread">
     <property name="geometry">

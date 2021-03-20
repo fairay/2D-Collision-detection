@@ -18,17 +18,18 @@ int BaseTree::deep() {return 0;}
 void BaseTree::collide_mult(collide_func, int) {}
 void BaseTree::add_ball_mult(Ball*) {}
 void BaseTree::_add_ball_leaves(Ball*, bool) {}
-
+void BaseTree::_init_leaves() {}
 
 void BaseTree::_collide_leaf(collide_func f)
 {
     for (size_t i=0; i<_ball_arr.size(); i++)
         for (size_t j=i+1; j<_ball_arr.size(); j++)
         {
-            double dist = sqrt(pow(_ball_arr[i]->pos.x - _ball_arr[j]->pos.x, 2) +
-                               pow(_ball_arr[i]->pos.y - _ball_arr[j]->pos.y, 2));
-            if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
-                f(*_ball_arr[i], *_ball_arr[j]);
+            collide_balls(_ball_arr[i], _ball_arr[j], f);
+//            double dist = sqrt(pow(_ball_arr[i]->pos.x - _ball_arr[j]->pos.x, 2) +
+//                               pow(_ball_arr[i]->pos.y - _ball_arr[j]->pos.y, 2));
+//            if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
+//                f(*_ball_arr[i], *_ball_arr[j]);
         }
 }
 
@@ -62,4 +63,14 @@ void thread_collide_balls(BaseTree* tree, collide_func f, int deep)
         tree->collide_mult(f, deep);
     else
         tree->collide(f);
+}
+
+
+
+void collide_balls(Ball* b1, Ball* b2, collide_func f)
+{
+    double dist = sqrt(pow(b1->pos.x - b2->pos.x, 2) +
+                       pow(b1->pos.y - b2->pos.y, 2));
+    if (dist <= b1->r + b2->r)
+        f(*b1, *b2);
 }
