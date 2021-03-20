@@ -13,5 +13,5 @@ void Scene::_bin_alg(bool is_threading)
     if (is_threading)
         field.collide(_collide_balls);
     else
-        field.collide(_collide_balls);
+        field.collide_mult(_collide_balls);
 }

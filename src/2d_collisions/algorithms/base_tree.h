@@ -6,6 +6,7 @@
 #include <mutex>
 #include <vector>
 
+#define THREAD_N    8
 class ThreadManager;
 
 class BaseTree

@@ -24,13 +24,7 @@ void BaseTree::_collide_leaf(collide_func f)
 {
     for (size_t i=0; i<_ball_arr.size(); i++)
         for (size_t j=i+1; j<_ball_arr.size(); j++)
-        {
             collide_balls(_ball_arr[i], _ball_arr[j], f);
-//            double dist = sqrt(pow(_ball_arr[i]->pos.x - _ball_arr[j]->pos.x, 2) +
-//                               pow(_ball_arr[i]->pos.y - _ball_arr[j]->pos.y, 2));
-//            if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
-//                f(*_ball_arr[i], *_ball_arr[j]);
-        }
 }
 
 void BaseTree::select_nodes(std::vector<BaseTree*>&, int, int) {}

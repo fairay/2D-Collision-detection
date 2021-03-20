@@ -12,11 +12,12 @@ public:
 
     virtual void add_ball(Ball* ball);
     virtual void collide(collide_func f);
+    virtual void collide_mult(collide_func f, int th_n=0);
 private:
     double _w, _h;
     double _w_step, _h_step;
     bool _is_selective;
-    // std::vector<Ball*> cell_matr[cell_n][cell_n];
+
     Ball* cell_matr[cell_n][cell_n][1000/cell_n];
     int n_matr[cell_n][cell_n];
 

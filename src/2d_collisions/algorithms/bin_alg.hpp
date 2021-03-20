@@ -4,6 +4,9 @@
 #include "bin_alg.h"
 #include <iostream>
 
+#define MAX_OPTIMIZE_N 1200
+
+
 template <int cell_n>
 BinAlg<cell_n>::BinAlg(double w, double h, int ball_n): _w(w), _h(h)
 {
@@ -13,7 +16,7 @@ BinAlg<cell_n>::BinAlg(double w, double h, int ball_n): _w(w), _h(h)
     for (int i=0; i<cell_n; i++)
         for (int j=0; j<cell_n; j++)
             n_matr[i][j] = 0;
-    _is_selective = false;
+    _is_selective = (ball_n < 1200);
 
 //    for (int i=1; i<cell_n; i++)
 //        memcpy(&n_matr[i][0], &n_matr[0][0], cell_n);
@@ -58,6 +61,21 @@ void BinAlg<cell_n>::collide(collide_func f)
 }
 
 template <int cell_n>
+void BinAlg<cell_n>::collide_mult(collide_func f, int)
+{
+    float thread_step = (float)cell_n / THREAD_N;
+    #pragma omp parallel for num_threads(THREAD_N)
+    for (int k=0; k<THREAD_N; k++)
+    {
+        int beg = thread_step * k;
+        int end = thread_step * (k + 1);
+        for (int i=beg; i<end; i++)
+            for (int j=0; j<cell_n; j++)
+                _collide_cell(f, i, j);
+    }
+}
+
+template <int cell_n>
 void BinAlg<cell_n>::_collide_cell(collide_func f, int i, int j)
 {
     Ball** arr = cell_matr[i][j];
@@ -66,22 +84,12 @@ void BinAlg<cell_n>::_collide_cell(collide_func f, int i, int j)
     else if (size == 2)
     {
         collide_balls(arr[0], arr[1], f);
-//        double dist = sqrt(pow(arr[0]->pos.x - arr[1]->pos.x, 2) +
-//                           pow(arr[0]->pos.y - arr[1]->pos.y, 2));
-//        if (dist <= arr[0]->r + arr[1]->r)
-//            f(*arr[0], *arr[1]);
     }
     else
     {
         for (size_t l=0; l<size; l++)
             for (size_t k=l+1; k<size; k++)
-            {
                 collide_balls(arr[l], arr[k], f);
-    //            double dist = sqrt(pow(arr[l]->pos.x - arr[k]->pos.x, 2) +
-    //                               pow(arr[l]->pos.y - arr[k]->pos.y, 2));
-    //            if (dist <= arr[l]->r + arr[k]->r)
-    //                f(*arr[l], *arr[k]);
-            }
     }
 
     n_matr[i][j] = 0;

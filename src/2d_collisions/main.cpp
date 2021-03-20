@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
         pre_time = new_time;
     }
 
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
-//    return a.exec();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
     return 0;
 }
 
