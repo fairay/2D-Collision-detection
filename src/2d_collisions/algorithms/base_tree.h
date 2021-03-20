@@ -6,6 +6,7 @@
 #include <mutex>
 #include <vector>
 
+#define THREAD_N    8
 class ThreadManager;
 
 class BaseTree
@@ -31,11 +32,13 @@ protected:
 
     void _collide_leaf(collide_func f);
 
-    virtual void _init_leaves() = 0;
+    virtual void _init_leaves();
     virtual void _add_ball_leaves(Ball* ball, bool is_threading=false);
 };
 
 void thread_add_balls(BaseTree* tree, std::vector<Ball> &ball_arr);
 void thread_collide_balls(BaseTree* tree, collide_func f, int deep);
+
+void collide_balls(Ball* b1, Ball* b2, collide_func f);
 
 #endif // BASE_TREE_H

@@ -14,6 +14,7 @@ LIBS += -fopenmp
 
 SOURCES += \
     algorithms/base_tree.cpp \
+    algorithms/bin_algorithm.cpp \
     algorithms/bin_tree.cpp \
     algorithms/brute_force.cpp \
     algorithms/dynamic_quad_tree.cpp \
@@ -28,6 +29,8 @@ SOURCES += \
 
 HEADERS += \
     algorithms/base_tree.h \
+    algorithms/bin_alg.h \
+    algorithms/bin_alg.hpp \
     algorithms/rect_tree.h \
     algorithms/thread_manager.h \
     ball/ball.h \
