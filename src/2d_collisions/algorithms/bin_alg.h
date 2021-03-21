@@ -13,6 +13,8 @@ public:
     virtual void add_ball(Ball* ball);
     virtual void collide(collide_func f);
     virtual void collide_mult(collide_func f, int th_n=0);
+
+    virtual void show(std::shared_ptr<QGraphicsScene> &_qscene);
 private:
     double _w, _h;
     double _w_step, _h_step;
