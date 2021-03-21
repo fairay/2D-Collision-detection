@@ -4,9 +4,9 @@
 #include <QApplication>
 #include <iostream>
 
-void performance_test()
+void performance_test(int n, upd_t alorithm, bool is_thread = true)
 {
-    Scene _scene(1300, 3.0);
+    Scene _scene(n, 3.0);
 
     start_counter();
     double init_time = get_counter();
@@ -14,9 +14,6 @@ void performance_test()
     double fps_time = init_time;
     size_t fps_count = 0;
     double fps_update = 500.0;
-
-    bool is_thread = true;
-    upd_t alorithm = BIN_ALG;
 
     while (get_counter() - init_time < 1000*5.0)
     {
@@ -43,7 +40,7 @@ void performance_test()
 
 int main(int argc, char *argv[])
 {
-    // performance_test();
+    performance_test(10000, BIN_ALG, false);
 
     QApplication a(argc, argv);
     MainWindow w;
