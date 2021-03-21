@@ -13,6 +13,8 @@
 #define MAX_SPEED 100.0
 #define ADD_THREAD_N 8
 
+class BaseTree;
+
 typedef enum {
     BRUTE_FORCE,
     QUAD_TREE,
@@ -41,6 +43,7 @@ private:
     size_t _ball_n = 100;
     double _ball_r = 1.0;
     std::vector<Ball> _ball_arr;
+    std::shared_ptr<BaseTree> _alg;
 
     void _init_state();
     void _collide_border(Ball& ball, double x, double y);

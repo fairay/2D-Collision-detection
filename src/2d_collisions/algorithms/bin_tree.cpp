@@ -4,7 +4,7 @@
 
 // #include "omp.h"
 
-#define SPLIT_N 70
+#define SPLIT_N 10 // !!! 70 !!!
 
 using namespace std;
 
@@ -20,6 +20,8 @@ public:
     void add_ball_mult(Ball* ball);
     void collide_mult(collide_func f, int deep);
 
+    virtual void show(shared_ptr<QGraphicsScene> &_qscene);
+
     void select_nodes(std::vector<BaseTree*>& v, int to, int from=0);
 
     int deep();
@@ -33,7 +35,7 @@ protected:
     BinTree* _right_leaf;
 
     virtual void _init_leaves();
-    void _add_ball_leavs(Ball* ball, bool is_threading = false);
+    virtual void _add_ball_leavs(Ball* ball, bool is_threading = false);
     void _tcb(collide_func f, int deep);
 };
 
@@ -59,6 +61,19 @@ BinTree::~BinTree()
         delete  _right_leaf;
     }
 }
+
+void BinTree::show(shared_ptr<QGraphicsScene> &_qscene)
+{
+    if (_is_leaf) return;
+    Point2d mid = mid_point(_p_arr[1], _p_arr[2]);
+    _qscene->addLine(_p_arr[0].x, _p_arr[0].y,
+                     mid.x, mid.y,
+                     QPen(Qt::blue));
+
+    _right_leaf->show(_qscene);
+    _left_leaf->show(_qscene);
+}
+
 
 void BinTree::add_ball(Ball* ball)
 {
@@ -231,10 +246,13 @@ class MainBinTree: public BinTree
 public:
     MainBinTree(const Point2d& min_p, const Point2d& max_p);
     ~MainBinTree();
+
+    virtual void show(shared_ptr<QGraphicsScene> &_qscene);
 private:
     Point2d _p_arr[4];
 
     virtual void _init_leaves();
+    virtual void _add_ball_leavs(Ball* ball, bool is_threading = false);
 };
 
 MainBinTree::MainBinTree(const Point2d& min_p, const Point2d& max_p)
@@ -245,6 +263,20 @@ MainBinTree::MainBinTree(const Point2d& min_p, const Point2d& max_p)
     _p_arr[3] = max_p;
 }
 MainBinTree::~MainBinTree() {}
+
+void MainBinTree::show(shared_ptr<QGraphicsScene> &_qscene)
+{
+    if (_is_leaf) return;
+    _qscene->addLine(_p_arr[0].x, _p_arr[0].y,
+                     _p_arr[3].x, _p_arr[3].y,
+                     QPen(Qt::blue));
+
+    _right_leaf->show(_qscene);
+    _left_leaf->show(_qscene);
+    if (_right_leaf->is_leaf())
+        cout << "ALLERT!" << endl;
+}
+
 
 void MainBinTree::_init_leaves()
 {
@@ -259,6 +291,30 @@ void MainBinTree::_init_leaves()
     _left_leaf =  new BinTree(_p_arr[0], _p_arr[1], _p_arr[3]);
 }
 
+
+void MainBinTree::_add_ball_leavs(Ball* ball, bool is_threading)
+{
+    Point2d p = ball->pos;
+    p.x += _right_off.x, p.y += _right_off.y;
+    if (vector_mult(_dir, Vector2d(_p_arr[0], p)) >= 0)
+    {
+        if (is_threading)
+            _right_leaf->add_ball_mult(ball);
+        else
+            _right_leaf->add_ball(ball);
+    }
+
+    p = ball->pos;
+    p.x += _left_off.x, p.y += _left_off.y;
+    if (vector_mult(_dir, Vector2d(_p_arr[0], p)) <= 0)
+    {
+        if (is_threading)
+            _left_leaf->add_ball_mult(ball);
+        else
+            _left_leaf->add_ball(ball);
+    }
+}
+
 void roflan_f(BaseTree* tree, collide_func f)
 {
     tree->collide(f);
@@ -266,20 +322,21 @@ void roflan_f(BaseTree* tree, collide_func f)
 
 void Scene::_bin_tree(bool is_threading)
 {
-    MainBinTree tree(Point2d(0,0), Point2d(_w, _h));
+    // MainBinTree tree(Point2d(0,0), Point2d(_w, _h));
+    _alg = shared_ptr<BaseTree>(new MainBinTree(Point2d(0,0), Point2d(_w, _h)));
 
     if (is_threading)
     {
         //thread_add_balls(&tree, _ball_arr);
         for (size_t i=0; i<_ball_n; i++)
-            tree.add_ball(&_ball_arr[i]);
+            _alg->add_ball(&_ball_arr[i]);
 
         // tree.collide_mult(_collide_balls, 2);
 
         int thread_n = 8;
         vector<BaseTree*> v;
         v.reserve(thread_n);
-        tree.select_nodes(v, thread_n);
+        _alg->select_nodes(v, thread_n);
 
         vector<thread> thread_arr;
         thread_arr.reserve(thread_n);
@@ -298,8 +355,8 @@ void Scene::_bin_tree(bool is_threading)
     else
     {
         for (size_t i=0; i<_ball_n; i++)
-            tree.add_ball(&_ball_arr[i]);
+            _alg->add_ball(&_ball_arr[i]);
 
-         tree.collide(_collide_balls);
+         _alg->collide(_collide_balls);
     }
 }

@@ -1,6 +1,6 @@
 #include "rect_tree.h"
 #include <iostream>
-#define SPLIT_N 100
+#define SPLIT_N 20 // !!! 100 !!!
 
 using namespace std;
 
@@ -10,6 +10,8 @@ class HexaTree: public RectTree
 public:
     HexaTree(Point2d min_p, Point2d max_p);
     ~HexaTree();
+
+    virtual void show(shared_ptr<QGraphicsScene> &_qscene);
 private:
     Point2d _cnt0, _cnt1, _cnt2, _cnt3;
 
@@ -41,56 +43,27 @@ HexaTree::~HexaTree()
             delete _leaf_arr[i];
 }
 
-/*
-void HexaTree::add_ball(Ball* ball)
+void HexaTree::show(shared_ptr<QGraphicsScene> &_qscene)
 {
-    if (_min_p.x - ball->r < ball->pos.x && ball->pos.x < _max_p.x + ball->r &&
-        _min_p.y - ball->r < ball->pos.y && ball->pos.y < _max_p.y + ball->r)
-    {
-        if (_is_leaf)
-        {
-            _ball_arr.push_back(ball);
-            if (_ball_arr.size() >= _split_n)
-            {
-                _init_leaves();
-                for (size_t i=0; i<_ball_arr.size(); i++)
-                    _add_ball_leaves(_ball_arr[i]);
-                _ball_arr.clear();
-            }
-        }
-        else
-            _add_ball_leaves(ball);
-    }
+    if (_is_leaf) return;
+    _qscene->addLine(_min_p.x, _cnt0.y,
+                     _max_p.x, _cnt0.y,
+                     QPen(Qt::blue));
+    _qscene->addLine(_min_p.x, _cnt2.y,
+                     _max_p.x, _cnt2.y,
+                     QPen(Qt::blue));
+
+    _qscene->addLine(_cnt0.x, _min_p.y,
+                     _cnt0.x, _max_p.y,
+                     QPen(Qt::blue));
+    _qscene->addLine(_cnt1.x, _min_p.y,
+                     _cnt1.x, _max_p.y,
+                     QPen(Qt::blue));
+
+    for (size_t i = 0; i<_leaf_n; i++)
+        _leaf_arr[i]->show(_qscene);
 }
 
-void HexaTree::collide(collide_func f)
-{
-    if (_is_leaf)
-    {
-        if (_ball_arr.size() < 2) return;
-
-        for (size_t i=0; i<_ball_arr.size(); i++)
-            for (size_t j=i+1; j<_ball_arr.size(); j++)
-            {
-                double dist = sqrt(pow(_ball_arr[i]->pos.x - _ball_arr[j]->pos.x, 2) +
-                                   pow(_ball_arr[i]->pos.y - _ball_arr[j]->pos.y, 2));
-                if (dist <= _ball_arr[i]->r + _ball_arr[j]->r)
-                    f(*_ball_arr[i], *_ball_arr[j]);
-            }
-    }
-    else
-    {
-        for (size_t i=0; i<9; i++)
-            _leaf_arr[i]->collide(f);
-    }
-}
-
-void HexaTree::_add_ball_leaves(Ball* ball)
-{
-    for (size_t i=0; i<9; i++)
-        _leaf_arr[i]->add_ball(ball);
-}
-*/
 
 void HexaTree::_init_leaves()
 {
@@ -133,17 +106,18 @@ void HexaTree::_init_leaves()
 
 void Scene::_hexa_tree(bool is_threading)
 {
-    HexaTree tree(Point2d(0, 0), Point2d(_w, _h));
+    // HexaTree tree(Point2d(0, 0), Point2d(_w, _h));
+    _alg = shared_ptr<BaseTree>(new HexaTree(Point2d(0, 0), Point2d(_w, _h)));
     if (is_threading)
     {
-        thread_add_balls(&tree, _ball_arr);
-        tree.collide_mult(_collide_balls, 3);
+        thread_add_balls(_alg.get(), _ball_arr);
+        _alg->collide_mult(_collide_balls, 3);
     }
     else
     {
         for (size_t i=0; i<_ball_n; i++)
-            tree.add_ball(&_ball_arr[i]);
+            _alg->add_ball(&_ball_arr[i]);
 
-        tree.collide(_collide_balls);
+        _alg->collide(_collide_balls);
     }
 }

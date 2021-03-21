@@ -9,22 +9,21 @@ RectTree::~RectTree() {}
 
 void RectTree::add_ball(Ball* ball)
 {
-    if (is_ball_in(ball))
+    if (!is_ball_in(ball)) return;
+
+    if (_is_leaf)
     {
-        if (_is_leaf)
+        _ball_arr.push_back(ball);
+        if (_ball_arr.size() >= _split_n)
         {
-            _ball_arr.push_back(ball);
-            if (_ball_arr.size() >= _split_n)
-            {
-                _init_leaves();
-                for (size_t i=0; i<_ball_arr.size(); i++)
-                    _add_ball_leaves(_ball_arr[i]);
-                _ball_arr.clear();
-            }
+            _init_leaves();
+            for (size_t i=0; i<_ball_arr.size(); i++)
+                _add_ball_leaves(_ball_arr[i]);
+            _ball_arr.clear();
         }
-        else
-            _add_ball_leaves(ball);
     }
+    else
+        _add_ball_leaves(ball);
 }
 void RectTree::add_ball_mult(Ball *ball)
 {

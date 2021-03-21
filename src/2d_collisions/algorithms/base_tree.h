@@ -20,10 +20,13 @@ public:
     virtual void add_ball_mult(Ball* ball);
     virtual void collide_mult(collide_func f, int deep);
 
+    virtual void show(std::shared_ptr<QGraphicsScene> &_qscene);
+
     virtual void select_nodes(std::vector<BaseTree*> &v, int to, int from=0);
 
     bool is_void();
     virtual int deep();
+    bool is_leaf();
 protected:
     size_t _split_n = 70;
     bool _is_leaf = true;

@@ -1,5 +1,7 @@
 #include "scene.h"
+#include "algorithms/base_tree.h"
 #include <thread>
+#include <iostream>
 
 using namespace std;
 
@@ -16,6 +18,7 @@ Scene::~Scene() {}
 void Scene::show(shared_ptr<QGraphicsScene> &_qscene)
 {
     _qscene->clear();
+
     QPen vel_pen = QPen(QColor(Qt::red));
 
     for (auto ball : _ball_arr)
@@ -26,6 +29,9 @@ void Scene::show(shared_ptr<QGraphicsScene> &_qscene)
                          ball.pos.x + ball.vel.x/10, ball.pos.y + ball.vel.y/10,
                          QPen(QColor(Qt::red)));
     }
+
+    if (_alg)
+        _alg->show(_qscene);
 }
 
 void Scene::upd_ball(Ball& ball, double dt)
@@ -45,6 +51,8 @@ void Scene::upd_ball(Ball& ball, double dt)
 
 void Scene::update(double dt, upd_t update_type, bool is_threading)
 {
+    _alg = shared_ptr<BaseTree>(nullptr);
+
     if (false)  // is_threading
         _upd_pos_mul(dt);
     else

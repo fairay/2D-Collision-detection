@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <iostream>
 
-int main(int argc, char *argv[])
+void performance_test()
 {
     Scene _scene(1300, 3.0);
 
@@ -39,11 +39,15 @@ int main(int argc, char *argv[])
 
         pre_time = new_time;
     }
+}
+
+int main(int argc, char *argv[])
+{
+    // performance_test();
 
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     return a.exec();
-    return 0;
 }
 
