@@ -338,8 +338,8 @@ void Scene::_bin_tree(bool is_threading)
         v.reserve(thread_n);
         _alg->select_nodes(v, thread_n);
 
-        vector<thread> thread_arr;
-        thread_arr.reserve(thread_n);
+//        vector<thread> thread_arr;
+//        thread_arr.reserve(thread_n);
 
         #pragma omp parallel for num_threads(8)
         for (int i=0; i<thread_n; i++)

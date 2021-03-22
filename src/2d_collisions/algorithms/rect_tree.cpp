@@ -81,6 +81,20 @@ void RectTree::collide_mult(collide_func f, int deep)
     }
 }
 
+void RectTree::select_nodes(std::vector<BaseTree*>& v, int to, int from)
+{
+    if (to - from == 1)
+    {
+        v[from] = this;
+    }
+    else
+    {
+        int subth_n = (to-from) / _leaf_n;
+        for (size_t i=0; i<_leaf_n; i++)
+            this->_leaf_arr[i]->select_nodes(v, (i+1)*subth_n, i*subth_n);
+    }
+}
+
 void RectTree::_add_ball_leaves(Ball* ball, bool is_threading)
 {
     for (size_t i=0; i<_leaf_n; i++)

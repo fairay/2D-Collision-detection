@@ -137,7 +137,17 @@ void Scene::_dynamic_quad_tree(bool is_threading)
     //tree->split_space();
 
     if (is_threading)
-        tree->collide_mult(_collide_balls, 4);
+    {
+        int thread_n = 16;
+        vector<BaseTree*> v;
+        v.assign(thread_n, nullptr);
+        _alg->select_nodes(v, thread_n);
+
+        #pragma omp parallel for num_threads(16)
+        for (int i=0; i<thread_n; i++)
+            if (v[i])
+                v[i]->collide(_collide_balls);
+    }
     else
         tree->collide(_collide_balls);
 }

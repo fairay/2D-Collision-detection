@@ -4,10 +4,10 @@
 
 #define         MEASURE
 
-#ifdef MEASURE
+#ifdef          MEASURE
 #define BALL_N          10000
 #define IS_THREADING    true
-const upd_t ALG =       BIN_TREE;
+const upd_t ALG =       HEXA_TREE;
 #else
 #define BALL_N          100
 #endif // MEASURE

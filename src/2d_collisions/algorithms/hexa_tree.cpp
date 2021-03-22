@@ -110,8 +110,18 @@ void Scene::_hexa_tree(bool is_threading)
     _alg = shared_ptr<BaseTree>(new HexaTree(Point2d(0, 0), Point2d(_w, _h)));
     if (is_threading)
     {
-        thread_add_balls(_alg.get(), _ball_arr);
-        _alg->collide_mult(_collide_balls, 3);
+        for (size_t i=0; i<_ball_n; i++)
+            _alg->add_ball(&_ball_arr[i]);
+
+        int thread_n = 9;
+        vector<BaseTree*> v;
+        v.assign(thread_n, nullptr);
+        _alg->select_nodes(v, thread_n);
+
+        #pragma omp parallel for num_threads(9)
+        for (int i=0; i<thread_n; i++)
+            if (v[i])
+                v[i]->collide(_collide_balls);
     }
     else
     {
