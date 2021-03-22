@@ -2,6 +2,7 @@
 #define BASE_TREE_H
 
 #include "scene/scene.h"
+#include "config.h"
 #include <thread>
 #include <mutex>
 #include <vector>

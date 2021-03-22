@@ -6,7 +6,7 @@
 
 void performance_test(int n, upd_t alorithm, bool is_thread = true)
 {
-    Scene _scene(n, 3.0);
+    Scene _scene(n, BALL_R);
 
     start_counter();
     double init_time = get_counter();

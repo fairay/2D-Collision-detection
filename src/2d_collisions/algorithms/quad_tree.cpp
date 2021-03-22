@@ -49,10 +49,10 @@ void QuadTree::show(shared_ptr<QGraphicsScene> &_qscene)
     if (_is_leaf) return;
     _qscene->addLine(_min_p.x, _center.y,
                      _max_p.x, _center.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
     _qscene->addLine(_center.x, _min_p.y,
                      _center.x, _max_p.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
 
     for (size_t i = 0; i<_leaf_n; i++)
         _leaf_arr[i]->show(_qscene);

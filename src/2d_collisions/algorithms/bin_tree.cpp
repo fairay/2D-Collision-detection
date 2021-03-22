@@ -68,7 +68,7 @@ void BinTree::show(shared_ptr<QGraphicsScene> &_qscene)
     Point2d mid = mid_point(_p_arr[1], _p_arr[2]);
     _qscene->addLine(_p_arr[0].x, _p_arr[0].y,
                      mid.x, mid.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
 
     _right_leaf->show(_qscene);
     _left_leaf->show(_qscene);
@@ -269,12 +269,10 @@ void MainBinTree::show(shared_ptr<QGraphicsScene> &_qscene)
     if (_is_leaf) return;
     _qscene->addLine(_p_arr[0].x, _p_arr[0].y,
                      _p_arr[3].x, _p_arr[3].y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
 
     _right_leaf->show(_qscene);
     _left_leaf->show(_qscene);
-    if (_right_leaf->is_leaf())
-        cout << "ALLERT!" << endl;
 }
 
 

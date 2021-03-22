@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _qscene(new QGraphicsScene(-10, -10, 10, 10)),
-    _scene(BALL_N, 3.0)
+    _scene(BALL_N, BALL_R)
 {
     ui->setupUi(this);
     start_counter();

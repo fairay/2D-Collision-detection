@@ -48,17 +48,17 @@ void HexaTree::show(shared_ptr<QGraphicsScene> &_qscene)
     if (_is_leaf) return;
     _qscene->addLine(_min_p.x, _cnt0.y,
                      _max_p.x, _cnt0.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
     _qscene->addLine(_min_p.x, _cnt2.y,
                      _max_p.x, _cnt2.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
 
     _qscene->addLine(_cnt0.x, _min_p.y,
                      _cnt0.x, _max_p.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
     _qscene->addLine(_cnt1.x, _min_p.y,
                      _cnt1.x, _max_p.y,
-                     QPen(Qt::blue));
+                     QPen(MASH_COLOR));
 
     for (size_t i = 0; i<_leaf_n; i++)
         _leaf_arr[i]->show(_qscene);

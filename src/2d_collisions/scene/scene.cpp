@@ -19,19 +19,22 @@ void Scene::show(shared_ptr<QGraphicsScene> &_qscene)
 {
     _qscene->clear();
 
-    QPen vel_pen = QPen(QColor(Qt::red));
+    if (_alg)
+        _alg->show(_qscene);
+
+    QPen ball_pen(Qt::blue);
+    QBrush ball_brush(Qt::blue);
+    QPen speed_pen(Qt::red);
 
     for (auto ball : _ball_arr)
     {
         _qscene->addEllipse(ball.pos.x - _ball_r, ball.pos.y - _ball_r,
-                            _ball_r*2, _ball_r*2);
+                            _ball_r*2, _ball_r*2,
+                            ball_pen, ball_brush);
         _qscene->addLine(ball.pos.x, ball.pos.y,
                          ball.pos.x + ball.vel.x/10, ball.pos.y + ball.vel.y/10,
-                         QPen(QColor(Qt::red)));
+                         speed_pen);
     }
-
-    if (_alg)
-        _alg->show(_qscene);
 }
 
 void Scene::upd_ball(Ball& ball, double dt)

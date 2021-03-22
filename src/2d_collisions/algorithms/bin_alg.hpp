@@ -31,12 +31,12 @@ void BinAlg<cell_n>::show(std::shared_ptr<QGraphicsScene> &_qscene)
     for (double x=0; x + 0.5 < _w; x+=_h_step)
         _qscene->addLine(x, 0,
                          x, _h,
-                         QPen(Qt::blue));
+                         QPen(MASH_COLOR));
 
     for (double y=0; y + 0.5 < _h; y+=_w_step)
         _qscene->addLine(0, y,
                          _w, y,
-                         QPen(Qt::blue));
+                         QPen(MASH_COLOR));
 }
 
 
