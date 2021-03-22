@@ -74,8 +74,8 @@ void Scene::update(double dt, upd_t update_type, bool is_threading)
     case DYNAMIC_QUAD_TREE:
         _dynamic_quad_tree(is_threading);
         break;
-    case HEXA_TREE:
-        _hexa_tree(is_threading);
+    case NONA_TREE:
+        _nona_tree(is_threading);
         break;
     case BIN_TREE:
         _bin_tree(is_threading);
@@ -154,8 +154,8 @@ void Scene::_collide_border(Ball& ball, double x, double y)
 
     // Update position
     p3 = ball.r - d;
-    p1 = p3 * (a/d);
-    p2 = p3 * (b/d);
+    p1 = p3 * (a/d) * 1.0;
+    p2 = p3 * (b/d) * 1.0;
 
     ball.pos.x += p1;
     ball.pos.y += p2;

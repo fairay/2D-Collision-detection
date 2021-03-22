@@ -18,7 +18,7 @@ SOURCES += \
     algorithms/bin_tree.cpp \
     algorithms/brute_force.cpp \
     algorithms/dynamic_quad_tree.cpp \
-    algorithms/hexa_tree.cpp \
+    algorithms/nona_tree.cpp \
     algorithms/quad_tree.cpp \
     algorithms/rect_tree.cpp \
     ball/ball.cpp \

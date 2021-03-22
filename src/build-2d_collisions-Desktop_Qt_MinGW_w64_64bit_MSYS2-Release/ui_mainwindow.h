@@ -93,7 +93,7 @@ public:
         algorithm->setItemText(0, QCoreApplication::translate("MainWindow", "\320\237\320\276\320\273\320\275\321\213\320\271 \320\277\320\265\321\200\320\265\320\261\320\276\321\200", nullptr));
         algorithm->setItemText(1, QCoreApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\272\320\262\320\260\320\264\321\200\320\260\320\275\321\202\320\276\320\262", nullptr));
         algorithm->setItemText(2, QCoreApplication::translate("MainWindow", "\320\224\320\270\320\275\320\260\320\274\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \321\206\320\265\320\275\321\202\321\200", nullptr));
-        algorithm->setItemText(3, QCoreApplication::translate("MainWindow", "hex-\320\264\320\265\321\200\320\265\320\262\320\276", nullptr));
+        algorithm->setItemText(3, QCoreApplication::translate("MainWindow", "9-\320\264\320\265\321\200\320\265\320\262\320\276", nullptr));
         algorithm->setItemText(4, QCoreApplication::translate("MainWindow", "\320\221\320\270\320\275\320\260\321\200\320\275\320\276\320\265 \320\264\320\265\321\200\320\265\320\262\320\276", nullptr));
         algorithm->setItemText(5, QCoreApplication::translate("MainWindow", "\320\220\320\273\320\263\320\276\321\200\320\270\321\202\320\274 \320\272\320\276\321\200\320\267\320\270\320\275", nullptr));
 

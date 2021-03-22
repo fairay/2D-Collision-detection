@@ -6,7 +6,7 @@ typedef enum {
     BRUTE_FORCE,
     QUAD_TREE,
     DYNAMIC_QUAD_TREE,
-    HEXA_TREE,
+    NONA_TREE,
     BIN_TREE,
     BIN_ALG,
     NO_CHECK

@@ -44,7 +44,7 @@ private:
     void _brute_force(bool is_threading);
     void _quad_tree(bool is_threading);
     void _dynamic_quad_tree(bool is_threading);
-    void _hexa_tree(bool is_threading);
+    void _nona_tree(bool is_threading);
     void _bin_tree(bool is_threading);
     void _bin_alg(bool is_threading);
 

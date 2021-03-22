@@ -3,13 +3,13 @@
 #include "scene/alg.h"
 #include <QColor>
 
-// #define         MEASURE
+#define         MEASURE
 #define         BALL_R  3.0
 
 #ifdef          MEASURE
-#define BALL_N          10000
+#define BALL_N          30000
 #define IS_THREADING    false
-const upd_t ALG =       HEXA_TREE;
+const upd_t ALG =       NONA_TREE;
 #else
 #define BALL_N          100
 #endif // MEASURE
