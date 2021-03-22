@@ -41,10 +41,11 @@ void performance_test(int n, upd_t alorithm, bool is_thread = true)
 int main(int argc, char *argv[])
 {
     performance_test(10000, BIN_ALG, false);
+    return 0;
 
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    return a.exec();
+//    QApplication a(argc, argv);
+//    MainWindow w;
+//    w.show();
+//    return a.exec();
 }
 

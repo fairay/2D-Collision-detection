@@ -1,5 +1,5 @@
 #include "rect_tree.h"
-#define SPLIT_N 70 // !!! 70 !!!
+#define SPLIT_N 10 // !!! 70 !!!
 
 using namespace std;
 
