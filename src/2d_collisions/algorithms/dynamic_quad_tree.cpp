@@ -1,5 +1,5 @@
 #include "rect_tree.h"
-#define SPLIT_N 10 // !!! 70 !!!
+#define SPLIT_N 100 // !!! 70 !!!
 
 using namespace std;
 
@@ -52,15 +52,14 @@ void DynamicQuadTree::show(shared_ptr<QGraphicsScene> &_qscene)
 void DynamicQuadTree::count_center()
 {
     double sum_x = 0, sum_y = 0;
-    size_t n = _ball_arr.size();
 
-    for (size_t i=0; i<n; i++)
+    for (size_t i=0; i<_ball_n; i++)
     {
         sum_x += _ball_arr[i]->pos.x;
         sum_y += _ball_arr[i]->pos.y;
     }
-    sum_x /= n;
-    sum_y /= n;
+    sum_x /= _ball_n;
+    sum_y /= _ball_n;
 
     _center.x = sum_x;
     _center.y = sum_y;
@@ -79,7 +78,7 @@ void DynamicQuadTree::add_ball(Ball* ball)
 
     if (_is_leaf)
     {
-        _ball_arr.push_back(ball);
+        _ball_arr[_ball_n++] = ball;
         split_space();
 //        if (_ball_arr.size() >= _split_n)
 //        {
@@ -95,14 +94,14 @@ void DynamicQuadTree::add_ball(Ball* ball)
 
 void DynamicQuadTree::split_space()
 {
-    if (_ball_arr.size() < _split_n) return;
+    if (_ball_n < _split_n) return;
 
     count_center();
 
     _init_leaves();
-    for (size_t i=0; i<_ball_arr.size(); i++)
+    for (size_t i=0; i<_ball_n; i++)
         _add_ball_leaves(_ball_arr[i]);
-    _ball_arr.clear();
+    _ball_n = 0;
 
     //for (size_t i=0; i<4; i++)
     //    _leaf_arr[i]->split_space();

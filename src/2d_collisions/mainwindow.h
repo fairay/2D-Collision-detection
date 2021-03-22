@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "scene/scene.h"
+#include "config.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -10,7 +10,7 @@ BaseTree::~BaseTree() {}
 bool BaseTree::is_void()
 {
     //return _ball_arr.size() < 2; //&& _is_leaf;
-    return _is_leaf && (_ball_arr.size() < 2);
+    return _is_leaf && (_ball_n < 2);
 }
 
 int BaseTree::deep() {return 0;}
@@ -23,14 +23,14 @@ void BaseTree::_init_leaves() {}
 
 void BaseTree::_collide_leaf(collide_func f)
 {
-    for (size_t i=0; i<_ball_arr.size(); i++)
-        for (size_t j=i+1; j<_ball_arr.size(); j++)
+    for (size_t i=0; i<_ball_n; i++)
+        for (size_t j=i+1; j<_ball_n; j++)
             collide_balls(_ball_arr[i], _ball_arr[j], f);
 }
 
 void BaseTree::select_nodes(std::vector<BaseTree*>&, int, int) {}
 
-void BaseTree::show(std::shared_ptr<QGraphicsScene> &_qscene) {}
+void BaseTree::show(std::shared_ptr<QGraphicsScene>&) {}
 
 
 void _thread_add(BaseTree* tree, vector<Ball>* ball_arr, int from_, int to_)

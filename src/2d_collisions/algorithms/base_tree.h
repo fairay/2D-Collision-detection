@@ -7,6 +7,7 @@
 #include <vector>
 
 #define THREAD_N    8
+#define MAX_BALL_N  100
 class ThreadManager;
 
 class BaseTree
@@ -30,7 +31,9 @@ public:
 protected:
     size_t _split_n = 70;
     bool _is_leaf = true;
-    std::vector<Ball*> _ball_arr;
+    //std::vector<Ball*> _ball_arr;
+    Ball* _ball_arr[MAX_BALL_N+1];
+    size_t _ball_n = 0;
     std::mutex _m;
 
     void _collide_leaf(collide_func f);

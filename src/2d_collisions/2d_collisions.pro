@@ -34,7 +34,9 @@ HEADERS += \
     algorithms/rect_tree.h \
     algorithms/thread_manager.h \
     ball/ball.h \
+    config.h \
     mainwindow.h \
+    scene/alg.h \
     scene/scene.h \
     scene/timer_.h
 

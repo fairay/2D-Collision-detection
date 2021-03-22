@@ -4,7 +4,7 @@
 
 // #include "omp.h"
 
-#define SPLIT_N 10 // !!! 70 !!!
+#define SPLIT_N 60 // !!! 70 !!!
 
 using namespace std;
 
@@ -79,13 +79,13 @@ void BinTree::add_ball(Ball* ball)
 {
     if (_is_leaf)
     {
-        _ball_arr.push_back(ball);
-        if (_ball_arr.size() >= _split_n)
+        _ball_arr[_ball_n++] = ball;
+        if (_ball_n >= _split_n)
         {
             _init_leaves();
             for (size_t i=0; i<_split_n; i++)
                 _add_ball_leavs(_ball_arr[i]);
-            _ball_arr.clear();
+            _ball_n = 0;
         }
     }
     else
@@ -98,13 +98,13 @@ void BinTree::add_ball_mult(Ball *ball)
     _m.lock();
     if (_is_leaf)
     {
-        _ball_arr.push_back(ball);
-        if (_ball_arr.size() >= _split_n)
+        _ball_arr[_ball_n++] = ball;
+        if (_ball_n >= _split_n)
         {
             _init_leaves();
             for (size_t i=0; i<_split_n; i++)
                 _add_ball_leavs(_ball_arr[i], false);
-            _ball_arr.clear();
+            _ball_n = 0;
         }
         _m.unlock();
     }
@@ -120,7 +120,7 @@ void BinTree::collide(collide_func f)
 {
     if (_is_leaf)
     {
-        if (_ball_arr.size() < 2) return;
+        if (_ball_n < 2) return;
         _collide_leaf(f);
     }
     else

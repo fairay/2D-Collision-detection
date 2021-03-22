@@ -13,13 +13,13 @@ void RectTree::add_ball(Ball* ball)
 
     if (_is_leaf)
     {
-        _ball_arr.push_back(ball);
-        if (_ball_arr.size() >= _split_n)
+        _ball_arr[_ball_n++] = ball;
+        if (_ball_n >= _split_n)
         {
             _init_leaves();
-            for (size_t i=0; i<_ball_arr.size(); i++)
+            for (size_t i=0; i<_ball_n; i++)
                 _add_ball_leaves(_ball_arr[i]);
-            _ball_arr.clear();
+            _ball_n = 0;
         }
     }
     else
@@ -27,26 +27,25 @@ void RectTree::add_ball(Ball* ball)
 }
 void RectTree::add_ball_mult(Ball *ball)
 {
-    if (is_ball_in(ball))
+    if (!is_ball_in(ball)) return;
+
+    _m.lock();
+    if (_is_leaf)
     {
-        _m.lock();
-        if (_is_leaf)
+        _ball_arr[_ball_n++] = ball;
+        if (_ball_n >= _split_n)
         {
-            _ball_arr.push_back(ball);
-            if (_ball_arr.size() >= _split_n)
-            {
-                _init_leaves();
-                for (size_t i=0; i<_ball_arr.size(); i++)
-                    _add_ball_leaves(_ball_arr[i], false);
-                _ball_arr.clear();
-            }
-            _m.unlock();
+            _init_leaves();
+            for (size_t i=0; i<_ball_n; i++)
+                _add_ball_leaves(_ball_arr[i], false);
+            _ball_n = 0;
         }
-        else
-        {
-            _m.unlock();
-            _add_ball_leaves(ball, true);
-        }
+        _m.unlock();
+    }
+    else
+    {
+        _m.unlock();
+        _add_ball_leaves(ball, true);
     }
 }
 
@@ -55,7 +54,7 @@ void RectTree::collide(collide_func f)
 {
     if (_is_leaf)
     {
-        if (_ball_arr.size() < 2) return;
+        if (_ball_n < 2) return;
         _collide_leaf(f);
     }
     else

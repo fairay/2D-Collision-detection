@@ -40,12 +40,15 @@ void performance_test(int n, upd_t alorithm, bool is_thread = true)
 
 int main(int argc, char *argv[])
 {
-    performance_test(10000, BIN_ALG, false);
+    // to manage values -> config.h
+    #ifdef MEASURE
+    performance_test(BALL_N, ALG, IS_THREADING);
     return 0;
-
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
-//    return a.exec();
+    #else
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
+    #endif // MEASURE
 }
 

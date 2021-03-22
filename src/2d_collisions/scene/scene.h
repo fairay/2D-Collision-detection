@@ -1,6 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "alg.h"
 #include "ball/ball.h"
 
 #include <QGraphicsScene>
@@ -15,15 +16,6 @@
 
 class BaseTree;
 
-typedef enum {
-    BRUTE_FORCE,
-    QUAD_TREE,
-    DYNAMIC_QUAD_TREE,
-    HEXA_TREE,
-    BIN_TREE,
-    BIN_ALG,
-    NO_CHECK
-} upd_t;
 
 using collide_func = void (*)(Ball& ball1, Ball& ball2);
 

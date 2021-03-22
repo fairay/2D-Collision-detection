@@ -1,6 +1,6 @@
 #include "rect_tree.h"
 #include <iostream>
-#define SPLIT_N 20 // !!! 100 !!!
+#define SPLIT_N 100 // !!! 100 !!!
 
 using namespace std;
 
