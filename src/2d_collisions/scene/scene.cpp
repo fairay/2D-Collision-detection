@@ -25,14 +25,20 @@ void Scene::show(shared_ptr<QGraphicsScene> &_qscene)
     QPen ball_pen(Qt::blue);
     QBrush ball_brush(Qt::blue);
     QPen speed_pen(Qt::red);
+    speed_pen.setWidth(2);
+
+    double speed_len = _ball_r*2;
 
     for (auto ball : _ball_arr)
     {
         _qscene->addEllipse(ball.pos.x - _ball_r, ball.pos.y - _ball_r,
                             _ball_r*2, _ball_r*2,
                             ball_pen, ball_brush);
+        double v = sqrt(ball.vel.x*ball.vel.x + ball.vel.y*ball.vel.y);
+        if (v < 1e-3) continue;
         _qscene->addLine(ball.pos.x, ball.pos.y,
-                         ball.pos.x + ball.vel.x/10, ball.pos.y + ball.vel.y/10,
+                         ball.pos.x + ball.vel.x/v * speed_len,
+                         ball.pos.y + ball.vel.y/v * speed_len,
                          speed_pen);
     }
 }
@@ -154,8 +160,8 @@ void Scene::_collide_border(Ball& ball, double x, double y)
 
     // Update position
     p3 = ball.r - d;
-    p1 = p3 * (a/d) * 1.0;
-    p2 = p3 * (b/d) * 1.0;
+    p1 = p3 * (a/d) * 1.1;
+    p2 = p3 * (b/d) * 1.1;
 
     ball.pos.x += p1;
     ball.pos.y += p2;

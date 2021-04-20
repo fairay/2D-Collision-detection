@@ -42,7 +42,12 @@ int main(int argc, char *argv[])
 {
     // to manage values -> config.h
     #ifdef MEASURE
-    performance_test(BALL_N, ALG, IS_THREADING);
+    std::vector<int> arr_size{10, 30, 50, 70, 100};
+    for (auto val : arr_size)
+    {
+        std::cout << "=== SIZE: " << val << " ===" << std::endl;
+        performance_test(val, ALG, IS_THREADING);
+    }
     return 0;
     #else
     QApplication a(argc, argv);
