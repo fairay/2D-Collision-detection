@@ -26,6 +26,21 @@ BinAlg<cell_n>::~BinAlg() {}
 
 
 template <int cell_n>
+void BinAlg<cell_n>::show(std::shared_ptr<QGraphicsScene> &_qscene)
+{
+    for (double x=0; x + 0.5 < _w; x+=_h_step)
+        _qscene->addLine(x, 0,
+                         x, _h,
+                         QPen(MASH_COLOR));
+
+    for (double y=0; y + 0.5 < _h; y+=_w_step)
+        _qscene->addLine(0, y,
+                         _w, y,
+                         QPen(MASH_COLOR));
+}
+
+
+template <int cell_n>
 void BinAlg<cell_n>::add_ball(Ball* ball)
 {
     int i_min = (fmax(0, ball->pos.x - ball->r)) / _w_step;

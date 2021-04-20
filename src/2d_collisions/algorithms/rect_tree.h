@@ -16,6 +16,8 @@ public:
     void collide(collide_func f);
     void collide_mult(collide_func f, int deep);
 
+    virtual void select_nodes(std::vector<BaseTree*>& v, int to, int from=0);
+
     int deep();
     virtual void split_space();
     virtual bool is_ball_in(Ball *ball);

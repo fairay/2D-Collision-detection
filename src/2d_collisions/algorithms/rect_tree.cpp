@@ -9,45 +9,43 @@ RectTree::~RectTree() {}
 
 void RectTree::add_ball(Ball* ball)
 {
-    if (is_ball_in(ball))
+    if (!is_ball_in(ball)) return;
+
+    if (_is_leaf)
     {
-        if (_is_leaf)
+        _ball_arr[_ball_n++] = ball;
+        if (_ball_n >= _split_n)
         {
-            _ball_arr.push_back(ball);
-            if (_ball_arr.size() >= _split_n)
-            {
-                _init_leaves();
-                for (size_t i=0; i<_ball_arr.size(); i++)
-                    _add_ball_leaves(_ball_arr[i]);
-                _ball_arr.clear();
-            }
+            _init_leaves();
+            for (size_t i=0; i<_ball_n; i++)
+                _add_ball_leaves(_ball_arr[i]);
+            _ball_n = 0;
         }
-        else
-            _add_ball_leaves(ball);
     }
+    else
+        _add_ball_leaves(ball);
 }
 void RectTree::add_ball_mult(Ball *ball)
 {
-    if (is_ball_in(ball))
+    if (!is_ball_in(ball)) return;
+
+    _m.lock();
+    if (_is_leaf)
     {
-        _m.lock();
-        if (_is_leaf)
+        _ball_arr[_ball_n++] = ball;
+        if (_ball_n >= _split_n)
         {
-            _ball_arr.push_back(ball);
-            if (_ball_arr.size() >= _split_n)
-            {
-                _init_leaves();
-                for (size_t i=0; i<_ball_arr.size(); i++)
-                    _add_ball_leaves(_ball_arr[i], false);
-                _ball_arr.clear();
-            }
-            _m.unlock();
+            _init_leaves();
+            for (size_t i=0; i<_ball_n; i++)
+                _add_ball_leaves(_ball_arr[i], false);
+            _ball_n = 0;
         }
-        else
-        {
-            _m.unlock();
-            _add_ball_leaves(ball, true);
-        }
+        _m.unlock();
+    }
+    else
+    {
+        _m.unlock();
+        _add_ball_leaves(ball, true);
     }
 }
 
@@ -56,7 +54,7 @@ void RectTree::collide(collide_func f)
 {
     if (_is_leaf)
     {
-        if (_ball_arr.size() < 2) return;
+        if (_ball_n < 2) return;
         _collide_leaf(f);
     }
     else
@@ -80,6 +78,20 @@ void RectTree::collide_mult(collide_func f, int deep)
         thread_collide_balls(_leaf_arr[0], f, deep-1);
         for (size_t i=0; i<_leaf_n-1; i++)
             thread_arr[i].join();
+    }
+}
+
+void RectTree::select_nodes(std::vector<BaseTree*>& v, int to, int from)
+{
+    if (to - from == 1)
+    {
+        v[from] = this;
+    }
+    else
+    {
+        int subth_n = (to-from) / _leaf_n;
+        for (size_t i=0; i<_leaf_n; i++)
+            this->_leaf_arr[i]->select_nodes(v, (i+1)*subth_n, i*subth_n);
     }
 }
 

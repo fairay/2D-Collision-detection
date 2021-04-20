@@ -18,7 +18,7 @@ SOURCES += \
     algorithms/bin_tree.cpp \
     algorithms/brute_force.cpp \
     algorithms/dynamic_quad_tree.cpp \
-    algorithms/hexa_tree.cpp \
+    algorithms/nona_tree.cpp \
     algorithms/quad_tree.cpp \
     algorithms/rect_tree.cpp \
     ball/ball.cpp \
@@ -34,7 +34,9 @@ HEADERS += \
     algorithms/rect_tree.h \
     algorithms/thread_manager.h \
     ball/ball.h \
+    config.h \
     mainwindow.h \
+    scene/alg.h \
     scene/scene.h \
     scene/timer_.h
 

@@ -4,9 +4,9 @@
 #include <QApplication>
 #include <iostream>
 
-int main(int argc, char *argv[])
+void performance_test(int n, upd_t alorithm, bool is_thread = true)
 {
-    Scene _scene(1300, 3.0);
+    Scene _scene(n, BALL_R);
 
     start_counter();
     double init_time = get_counter();
@@ -14,9 +14,6 @@ int main(int argc, char *argv[])
     double fps_time = init_time;
     size_t fps_count = 0;
     double fps_update = 500.0;
-
-    bool is_thread = true;
-    upd_t alorithm = BIN_ALG;
 
     while (get_counter() - init_time < 1000*5.0)
     {
@@ -39,11 +36,24 @@ int main(int argc, char *argv[])
 
         pre_time = new_time;
     }
+}
 
+int main(int argc, char *argv[])
+{
+    // to manage values -> config.h
+    #ifdef MEASURE
+    std::vector<int> arr_size{10, 30, 50, 70, 100};
+    for (auto val : arr_size)
+    {
+        std::cout << "=== SIZE: " << val << " ===" << std::endl;
+        performance_test(val, ALG, IS_THREADING);
+    }
+    return 0;
+    #else
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     return a.exec();
-    return 0;
+    #endif // MEASURE
 }
 

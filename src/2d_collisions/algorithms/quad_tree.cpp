@@ -1,7 +1,7 @@
 #include "rect_tree.h"
 #include <iostream>
 
-#define SPLIT_N 100
+#define SPLIT_N 10 // !!! 70 !!!
 
 using namespace std;
 /*
@@ -20,6 +20,11 @@ class QuadTree: public RectTree
 public:
     QuadTree(Point2d min_p, Point2d max_p);
     ~QuadTree();
+
+    virtual void show(shared_ptr<QGraphicsScene> &_qscene);
+
+protected:
+    Ball* _ball_arr[SPLIT_N+1];
 private:
     Point2d _center;
     virtual void _init_leaves();
@@ -37,6 +42,20 @@ QuadTree::~QuadTree()
     if (!_is_leaf)
         for (size_t i=0; i<_leaf_n; i++)
             delete _leaf_arr[i];
+}
+
+void QuadTree::show(shared_ptr<QGraphicsScene> &_qscene)
+{
+    if (_is_leaf) return;
+    _qscene->addLine(_min_p.x, _center.y,
+                     _max_p.x, _center.y,
+                     QPen(MASH_COLOR));
+    _qscene->addLine(_center.x, _min_p.y,
+                     _center.x, _max_p.y,
+                     QPen(MASH_COLOR));
+
+    for (size_t i = 0; i<_leaf_n; i++)
+        _leaf_arr[i]->show(_qscene);
 }
 
 /*
@@ -150,18 +169,32 @@ void QuadTree::_init_leaves()
 
 void Scene::_quad_tree(bool is_threading)
 {
-    QuadTree tree(Point2d(0, 0), Point2d(_w, _h));
+    _alg = shared_ptr<BaseTree>(new QuadTree(Point2d(0, 0), Point2d(_w, _h)));
 
     if (is_threading)
     {
-        thread_add_balls(&tree, _ball_arr);
-        tree.collide_mult(_collide_balls, 4);
+        // thread_add_balls(_alg.get(), _ball_arr);
+        //_alg->collide_mult(_collide_balls, 4);
+
+        for (size_t i=0; i<_ball_n; i++)
+            _alg->add_ball(&_ball_arr[i]);
+
+        int thread_n = 16;
+        vector<BaseTree*> v;
+        // v.reserve(thread_n);
+        v.assign(thread_n, nullptr);
+        _alg->select_nodes(v, thread_n);
+
+        #pragma omp parallel for num_threads(16)
+        for (int i=0; i<thread_n; i++)
+            if (v[i])
+                v[i]->collide(_collide_balls);
     }
     else
     {
         for (size_t i=0; i<_ball_n; i++)
-            tree.add_ball(&_ball_arr[i]);
+            _alg->add_ball(&_ball_arr[i]);
 
-        tree.collide(_collide_balls);
+        _alg->collide(_collide_balls);
     }
 }

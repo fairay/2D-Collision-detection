@@ -1,6 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "alg.h"
 #include "ball/ball.h"
 
 #include <QGraphicsScene>
@@ -13,15 +14,8 @@
 #define MAX_SPEED 100.0
 #define ADD_THREAD_N 8
 
-typedef enum {
-    BRUTE_FORCE,
-    QUAD_TREE,
-    DYNAMIC_QUAD_TREE,
-    HEXA_TREE,
-    BIN_TREE,
-    BIN_ALG,
-    NO_CHECK
-} upd_t;
+class BaseTree;
+
 
 using collide_func = void (*)(Ball& ball1, Ball& ball2);
 
@@ -41,6 +35,7 @@ private:
     size_t _ball_n = 100;
     double _ball_r = 1.0;
     std::vector<Ball> _ball_arr;
+    std::shared_ptr<BaseTree> _alg;
 
     void _init_state();
     void _collide_border(Ball& ball, double x, double y);
@@ -49,7 +44,7 @@ private:
     void _brute_force(bool is_threading);
     void _quad_tree(bool is_threading);
     void _dynamic_quad_tree(bool is_threading);
-    void _hexa_tree(bool is_threading);
+    void _nona_tree(bool is_threading);
     void _bin_tree(bool is_threading);
     void _bin_alg(bool is_threading);
 
